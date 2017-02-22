@@ -4,21 +4,21 @@
 #ifndef DataItem_H
 #define DataItem_H
 
+#include <cstdio>
+
 class DataItem
 {  
   public:
-	// Default constructor
     DataItem();
-	// 
     DataItem(const size_t& rhs_id, const int& rhs_score, const size_t& rhs_position, const size_t& rhs_listNum);
-	DataItem(const size_t& rhs.id, const int& rhs.score)
-    DataItem(const DateItem& rhs);
+    DataItem(const size_t& rhs_id, const int& rhs_score);
+    DataItem(const DataItem& rhs);
     DataItem(DataItem&& rhs);
     DataItem& operator=(const DataItem& rhs);
     DataItem& operator=(DataItem&& rhs);
     ~DataItem();
     size_t getId() const;
-    size_t getScore() const;
+    int getScore() const;
     size_t getPosition() const;
     size_t getListNum() const;
     void setId(const size_t& rhs_id);

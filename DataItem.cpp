@@ -1,5 +1,8 @@
-#inlcude <DataItem.h>
+#include "DataItem.h"
 #include <limits.h>
+#include <iostream>
+
+using namespace std;
 
 DataItem::DataItem()
 {
@@ -22,17 +25,17 @@ DataItem::DataItem(const size_t& rhs_id, const int& rhs_score, const size_t& rhs
   listNum = rhs_listNum;
 }
 
-DataItem::DataItem(const size_t& rhs.id, const int& rhs.score)
+DataItem::DataItem(const size_t& rhs_id, const int& rhs_score)
 {
-	if(rhs_id == 0 || rhs_score <= INT_MIN || rhs_score >= INT_MAX)
-	  {
-		cout << "Invalid input for data item" << endl;
-		return;
-	  }
-	id = rhs.id;
-	score = rhs.score;
-	position = 0;
-	listNum = 0;
+  if(rhs_id == 0 || rhs_score <= INT_MIN || rhs_score >= INT_MAX)
+    {
+      cout << "Invalid input for data item" << endl;
+      return;
+    }
+  id = rhs_id;
+  score = rhs_score;
+  position = 0;
+  listNum = 0;
 }
 
 DataItem::DataItem(const DataItem& rhs)
@@ -105,8 +108,8 @@ void DataItem::setId(const size_t& rhs_id)
     }
   else
     {
-	  cout << "Invalid id" << endl;
-	  return;
+      cout << "Invalid id" << endl;
+      return;
     }
 }
 
@@ -114,12 +117,12 @@ void DataItem::setScore(const int& rhs_score)
 {
   if(rhs_score > INT_MIN && rhs_score < INT_MAX)
     {
-      score = rhs.score;
+      score = rhs_score;
     }
   else
     {
-	  cout << "Invalid score" << endl;
-	  return;
+      cout << "Invalid score" << endl;
+      return;
     }
 }
 
@@ -127,26 +130,26 @@ void DataItem::setPosition(const size_t& rhs_position)
 {
   if(rhs_position > 0)
     {
-      position = rhs.position;
+      position = rhs_position;
     }
   else
-	{
-	  cout << "Invalid position" << endl;
-	  return;
-	}
+    {
+      cout << "Invalid position" << endl;
+      return;
+    }
 }
 
 void DataItem::setListNum(const size_t& rhs_listNum)
 {
   if(rhs_listNum > 0)
     {
-      listNum = rhs.listNum;
+      listNum = rhs_listNum;
     }
   else
-	{
-	  cout << "Invalid list number" << endl;
-	  return;
-	}
+    {
+      cout << "Invalid list number" << endl;
+      return;
+    }
 }
 
 void DataItem::print() const
