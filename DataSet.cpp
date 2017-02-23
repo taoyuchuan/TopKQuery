@@ -5,6 +5,7 @@ Implementation for all member functions for class DataSet
 #include "DataSet.h"
 #include <vector>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -261,9 +262,14 @@ void DataSet::remove(const size_t& rhs_id)
       return;
     }
   
-  for(auto oneList: lists)
+  for(auto& oneList: lists)
     {
       size_t myPosition = findPosition(oneList, rhs_id);
+      if(myPosition == oneList.size())
+        {
+          cout << "non exist id" << endl;
+          return;
+        }
       oneList.erase(oneList.begin() + myPosition);
       for(size_t j=myPosition; j<oneList.size(); j++)
 	{
@@ -293,6 +299,7 @@ void DataSet::update(const size_t& rhs_id, const vector<int>& scores)
       size_t myPosition = findPosition(lists[i], rhs_id);
       lists[i][myPosition].setScore(scores[i]);
     }
+  // sort the list
 }
 
 // returns all scores of a data item in all lists
@@ -309,6 +316,11 @@ vector<int> DataSet::checkScore(const size_t& rhs_id) const
   for(auto oneList: lists)
     {
       size_t myPosition = findPosition(oneList, rhs_id);
+      if(myPosition == oneList.size())
+        {
+          cout << "non exist id" << endl;
+          return scores;
+        }
       scores.push_back(oneList[myPosition].getScore());
     }
   return scores;
@@ -323,15 +335,18 @@ void DataSet::print() const
       cout << "Empty data set" << endl;
       return;
     }
-  cout << "There are " << listSize << " lists: " << endl; 
+  cout << "There are " << dataSize << " data items" << endl;
+  cout << "The max id is " << maxId << endl;
+  cout << "There are " << listSize << " lists" << endl << endl; 
   int counter = 1;
   for(auto oneList: lists)
     {
       cout << "list " << counter++ << ":" << endl;
       for(auto oneItem: oneList)
 	{
-	  cout << oneItem.getId() << " " << oneItem.getScore() << " " << oneItem.getPosition() << " " << oneItem.getListNum() << endl;
+	  cout << std::left << std::setw(6) << oneItem.getId() << " " << std::left << std::setw(6) << oneItem.getScore() << " " << std::left << std::setw(6) << oneItem.getPosition() << " " << std::left << std::setw(6) << oneItem.getListNum() << endl;
 	}
+      cout << endl;
     }
 }
 
@@ -376,7 +391,7 @@ size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_
   if(rhs_id == 0)
     {
       cout << "Invalid id" << endl;
-      return 0;
+      return oneList.size();
     }
   for(int i=0; i<oneList.size(); i++)
     {
@@ -385,8 +400,7 @@ size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_
 	  return i;
 	}
     }
-  cout << "Invalid id" << endl;
-  return 0;
+  return oneList.size();
 }
 
 // returns the correct position of the data item that will be inserted
@@ -398,12 +412,16 @@ size_t DataSet::insertPosition(const vector<DataItem>& oneList, const int& rhs_s
       cout << "empty list" << endl;
       return 0;
     }
+  if(oneList.back().getScore() >= rhs_score)
+    {
+      return oneList.size();
+    }
   size_t start = 0;
   size_t end = oneList.size() - 1;
   while(start < end)
     {
       size_t mid = start + (end - start) / 2;
-      if(oneList[mid].getScore() <= rhs_score)
+      if(oneList[mid].getScore() >= rhs_score)
 	{
 	  start = mid + 1;
 	}

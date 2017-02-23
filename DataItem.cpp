@@ -185,7 +185,7 @@ void DataItem::print() const
       cout << "No Valid Data Item" << endl;
       return;
     }
-  cout << "The data item is: " << endl;
+  cout << "The data item is: data item " << id << endl;
   cout << "data item id: " << id << endl;
   cout << "data item score: " << score << endl;
   cout << "data item position: " << position << endl;
