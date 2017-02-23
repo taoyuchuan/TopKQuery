@@ -32,7 +32,8 @@ DataSet::DataSet()
   DataItem dataitem13{12, 4, 13, 1};
   DataItem dataitem14{15, 2, 14, 1};
   DataItem dataitem15{14, 1, 15, 1};
-  vector<DataItem> temp1{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7, dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
+  vector<DataItem> temp1{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
+      dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp1);
 
   dataitem1.update(2, 28, 1, 2);
@@ -50,7 +51,8 @@ DataSet::DataSet()
   dataitem13.update(11, 6, 13, 2);
   dataitem14.update(15, 4, 14, 2);
   dataitem15.update(13, 2, 15, 2);
-  vector<DataItem> temp2{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7, dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
+  vector<DataItem> temp2{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
+      dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp2);
 
   dataitem1.update(3, 30, 1, 3);
@@ -68,7 +70,8 @@ DataSet::DataSet()
   dataitem13.update(11, 6, 13, 3);
   dataitem14.update(15, 4, 14, 3);
   dataitem15.update(14, 2, 15, 3);
-  vector<DataItem> temp3{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7, dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
+  vector<DataItem> temp3{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
+      dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp3);
 }
 
@@ -344,7 +347,10 @@ void DataSet::print() const
       cout << "list " << counter++ << ":" << endl;
       for(auto oneItem: oneList)
 	{
-	  cout << std::left << std::setw(6) << oneItem.getId() << " " << std::left << std::setw(6) << oneItem.getScore() << " " << std::left << std::setw(6) << oneItem.getPosition() << " " << std::left << std::setw(6) << oneItem.getListNum() << endl;
+	  cout << std::left << std::setw(6) << oneItem.getId() << " "
+	       << std::left << std::setw(6) << oneItem.getScore() << " "
+	       << std::left << std::setw(6) << oneItem.getPosition() << " "
+	       << std::left << std::setw(6) << oneItem.getListNum() << endl;
 	}
       cout << endl;
     }
