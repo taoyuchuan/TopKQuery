@@ -1,9 +1,15 @@
+/********************************
+Implementation of DataItem class
+********************************/
+
 #include "DataItem.h"
 #include <limits.h>
 #include <iostream>
 
 using namespace std;
 
+// default constructor
+// no actual data item is created
 DataItem::DataItem()
 {
   id = 0;
@@ -12,6 +18,8 @@ DataItem::DataItem()
   listNum = 0;
 }
 
+// constructor with all parameters provided
+// the provided will be validated before construct the data item
 DataItem::DataItem(const size_t& rhs_id, const int& rhs_score, const size_t& rhs_position, const size_t& rhs_listNum)
 {
   if(rhs_id == 0 || rhs_score <= INT_MIN || rhs_score >= INT_MAX || rhs_position == 0 || rhs_listNum == 0)
@@ -25,6 +33,9 @@ DataItem::DataItem(const size_t& rhs_id, const int& rhs_score, const size_t& rhs
   listNum = rhs_listNum;
 }
 
+// constructor with only two parameters provided
+// if calling this constructor, the position and listNum will be set as 0
+// other assignment for position and listNum is required to constructor a valid data item
 DataItem::DataItem(const size_t& rhs_id, const int& rhs_score)
 {
   if(rhs_id == 0 || rhs_score <= INT_MIN || rhs_score >= INT_MAX)
@@ -38,6 +49,7 @@ DataItem::DataItem(const size_t& rhs_id, const int& rhs_score)
   listNum = 0;
 }
 
+// copy constructor
 DataItem::DataItem(const DataItem& rhs)
 {
   id = rhs.id;
@@ -46,6 +58,7 @@ DataItem::DataItem(const DataItem& rhs)
   listNum = rhs.listNum;
 }
 
+// move constructor
 DataItem::DataItem(DataItem&& rhs)
 {
   id = std::move(rhs.id);
@@ -54,6 +67,7 @@ DataItem::DataItem(DataItem&& rhs)
   listNum = std::move(rhs.listNum);
 }
 
+// copy assignment operator
 DataItem& DataItem::operator=(const DataItem& rhs)
 {
   if(this != &rhs)
@@ -64,6 +78,7 @@ DataItem& DataItem::operator=(const DataItem& rhs)
   return *this;
 }
 
+// move assignment operator
 DataItem& DataItem::operator=(DataItem&& rhs)
 {
   if(this != &rhs)
@@ -76,30 +91,36 @@ DataItem& DataItem::operator=(DataItem&& rhs)
   return *this;
 }
 
+// destructor
 DataItem::~DataItem()
 {
 }
 
+// return the id of a data item
 size_t DataItem::getId() const
 {
   return id;
 }
 
+// return the score of a data item
 int DataItem::getScore() const
 {
   return score;
 }
 
+// return the position of a data item in a list
 size_t DataItem::getPosition() const
 {
   return position;
 }
 
+// return the list number of a data item
 size_t DataItem::getListNum() const
 {
   return listNum;
 }
 
+// set the id of a data item
 void DataItem::setId(const size_t& rhs_id)
 {
   if(rhs_id > 0)
@@ -113,6 +134,7 @@ void DataItem::setId(const size_t& rhs_id)
     }
 }
 
+// set the score of a data item
 void DataItem::setScore(const int& rhs_score)
 {
   if(rhs_score > INT_MIN && rhs_score < INT_MAX)
@@ -126,6 +148,7 @@ void DataItem::setScore(const int& rhs_score)
     }
 }
 
+// set the position of a data item in a list
 void DataItem::setPosition(const size_t& rhs_position)
 {
   if(rhs_position > 0)
@@ -139,6 +162,7 @@ void DataItem::setPosition(const size_t& rhs_position)
     }
 }
 
+// set the list number of a data item
 void DataItem::setListNum(const size_t& rhs_listNum)
 {
   if(rhs_listNum > 0)
@@ -152,6 +176,8 @@ void DataItem::setListNum(const size_t& rhs_listNum)
     }
 }
 
+// print function
+// print out the information of a data item in a specific format
 void DataItem::print() const
 {
   if(id == 0 || score == INT_MIN || position == 0 || listNum == 0)
@@ -166,6 +192,8 @@ void DataItem::print() const
   cout << "data item listNum: " << listNum << endl;
 }
 
+// update the information of a data item
+// provided value will be validated before update
 void DataItem::update(const size_t& rhs_id, const int& rhs_score, const size_t& rhs_position, const size_t& rhs_listNum)
 {
   if(rhs_id == 0 || rhs_score <= INT_MIN || rhs_score >= INT_MAX || rhs_position == 0 || rhs_listNum == 0)
