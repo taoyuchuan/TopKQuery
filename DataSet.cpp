@@ -6,6 +6,7 @@ Implementation for all member functions for class DataSet
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 
 using namespace std;
 
@@ -423,9 +424,85 @@ void DataSet::clear()
 // is uses the value from dataSize as number of data items and listSize as number of sorted lists 
 void DataSet::generateDataSet()
 {
-  // provide implementation here
+	vector<DataItem> list;
+	srand(time(NULL));
+	for (int i = 0; i < listSize; i++)
+	{
+		for (int j = 0; j < dataSize; j++)
+		{
+			DataItem* item = new DataItem;
+			item->setId(j+1);
+			item->setListNum(i+1);
+			item->setScore(rand() % (dataSize * 5) + 1);
+			list.push_back(*item);
+		}
+		sort(list);
+		for (int k = 0; k < list.size(); k++)
+		{
+			list[k].setPosition(k+1);
+		}
+		lists.push_back(list);
+		list.clear();
+	}
 }
 
+void DataSet::sort(vector<DataItem>& oneList)
+{
+	
+	quickSort(oneList,0,dataSize-1);
+}
+
+void DataSet::quickSort(vector<DataItem>& oneList, int first, int last)
+{
+	if (last - first <= 20)
+	{
+		insertionSort(oneList,first,last);
+		return;
+	}
+	int pivot;
+	if (first < last)
+	{
+		pivot = partition(oneList,first, last);
+		quickSort(oneList,first, pivot - 1);
+		quickSort(oneList,pivot + 1, last);
+	}
+}
+
+void DataSet::insertionSort(vector<DataItem>& oneList, int first, int last)
+{
+	int i, j;
+	int temp;
+	for (i = first; i<last+1; i++)
+	{
+		temp = oneList[i].getScore();
+		for (j = i; j>0 && temp < oneList[j - 1].getScore(); j--)
+		{
+			oneList[j].setScore(oneList[j - 1].getScore());
+			oneList[j - 1].setScore(temp);
+		}
+	}
+}
+
+int DataSet::partition(vector<DataItem>& oneList,int first, int last)
+{
+	int i, j;
+	j = first - 1;
+	for (i = first; i < last; i++)       
+	{
+		if (oneList[i].getScore() < oneList[last].getScore())
+		{
+			j++;
+			DataItem temp = oneList[i];
+			oneList[i] = oneList[j];
+			oneList[j] = temp;
+		}
+	}
+	DataItem temp = oneList[last];
+	oneList[last] = oneList[++j];
+	oneList[j] = temp;
+
+	return j;
+}
 // returns the maximum id of the data item in all lists
 size_t DataSet::findMaxId() const
 {

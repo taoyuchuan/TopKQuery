@@ -63,6 +63,10 @@ class DataSet
     // private modifier for data set
     void clear();                          
     void generateDataSet();
+	void sort(vector<DataItem>& oneList);
+	void quickSort(vector<DataItem>& oneList, int first, int last);
+	int partition(vector<DataItem>& oneList,int first, int last);
+	void insertionSort(vector<DataItem>& oneList, int first, int last);
 	
     // private helper function to generate data set
     size_t findMaxId() const;
