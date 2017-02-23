@@ -70,6 +70,13 @@ int main()
       cout << score << " ";
     }
   cout << endl;
+
+  cout << endl << endl << endl;
+  DataSet s3 = s2;
+  s3.print();
+  vector<int> scores5{24, 1, 10};
+  s3.update(6, scores5);
+  s3.print();
   
   return 0;
 }

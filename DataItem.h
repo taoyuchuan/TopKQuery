@@ -41,6 +41,10 @@ class DataItem
 
     // midify function
     void update(const size_t& rhs_id, const int& rhs_score, const size_t& rhs_position, const size_t& rhs_listNum);
+
+    // overload comparison operator
+    bool operator<(const DataItem& rhs) const;
+    bool operator>(const DataItem& rhs) const;
   
   private:
     // private data member

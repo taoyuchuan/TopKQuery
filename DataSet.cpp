@@ -32,6 +32,7 @@ DataSet::DataSet()
   DataItem dataitem13{12, 4, 13, 1};
   DataItem dataitem14{15, 2, 14, 1};
   DataItem dataitem15{14, 1, 15, 1};
+  // use constructor to establish sorted list
   vector<DataItem> temp1{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
       dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp1);
@@ -51,6 +52,7 @@ DataSet::DataSet()
   dataitem13.update(11, 6, 13, 2);
   dataitem14.update(15, 4, 14, 2);
   dataitem15.update(13, 2, 15, 2);
+  // use constructor to establish sorted list
   vector<DataItem> temp2{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
       dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp2);
@@ -70,6 +72,7 @@ DataSet::DataSet()
   dataitem13.update(11, 6, 13, 3);
   dataitem14.update(15, 4, 14, 3);
   dataitem15.update(14, 2, 15, 3);
+  // user constructor to establish sorted list
   vector<DataItem> temp3{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
       dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp3);
@@ -138,10 +141,10 @@ DataSet::~DataSet()
 // scores of each data item in each list will be randomly generated
 void DataSet::reInit(const size_t& rhs_dataSize, const size_t& rhs_listSize)
 {
-  clear();
+  clear();                        // clear the data set
   dataSize = rhs_dataSize;
   listSize = rhs_listSize;
-  generateDataSet();
+  generateDataSet();              // regenerate data set
 }
 
 // return the number of data item
@@ -228,7 +231,7 @@ void DataSet::setLists(const vector<vector<DataItem>>& rhs_lists)
 // after insertion, the positions of data items after the inserted item will be increased by 1
 void DataSet::insert(const vector<int>& scores)
 {
-  if(scores.size() != listSize)
+  if(scores.size() != listSize)                 // number of scores mush match number of lists
     {
       cout << "Invalid input for scores" << endl;
       return;
@@ -236,21 +239,24 @@ void DataSet::insert(const vector<int>& scores)
 	
   for(int i=0; i<listSize; i++)
     {
-      DataItem temp;
-      temp.setId(maxId + 1);
+      DataItem temp;                    // temporary data item
+      temp.setId(maxId + 1);            // the new inserted id is always maxId + 1
       temp.setScore(scores[i]);
+      // call insertPosition() function to find the correct position for insertion
       size_t myPosition = insertPosition(lists[i], scores[i]);
       temp.setPosition(myPosition + 1);
       temp.setListNum(i + 1);
-      lists[i].insert(lists[i].begin() + myPosition, temp);
+      lists[i].insert(lists[i].begin() + myPosition, temp); // insert the data item
+
+      // the for loop undate the position value for the data item after the insertion position
       for(size_t j=myPosition+1; j<lists[i].size(); j++)
 	{
 	  size_t temp = lists[i][j].getPosition();
 	  lists[i][j].setPosition(temp + 1);
 	}
     }
-  dataSize += 1;
-  maxId += 1;
+  dataSize += 1;                   // update dataSIze
+  maxId += 1;                      // update maxId
 }
 
 // remove a data item from all lists
@@ -259,7 +265,7 @@ void DataSet::insert(const vector<int>& scores)
 // after removing the itme, the positions of the item after the removed item will be decreased by 1
 void DataSet::remove(const size_t& rhs_id)
 {
-  if(rhs_id == 0)
+  if(rhs_id == 0)                           // validate the id
     {
       cout << "Invalid id" << endl;
       return;
@@ -267,21 +273,24 @@ void DataSet::remove(const size_t& rhs_id)
   
   for(auto& oneList: lists)
     {
+      // call findPosition() function to get the correct position of the item that will be removed
       size_t myPosition = findPosition(oneList, rhs_id);
-      if(myPosition == oneList.size())
+      if(myPosition == oneList.size())            // check is the provided id exist
         {
           cout << "non exist id" << endl;
           return;
         }
-      oneList.erase(oneList.begin() + myPosition);
+      oneList.erase(oneList.begin() + myPosition);     // remvoe the data item
+
+      // for loop update the position value of the data item after the position of removed data item
       for(size_t j=myPosition; j<oneList.size(); j++)
 	{
 	  size_t temp = oneList[j].getPosition();
 	  oneList[j].setPosition(temp - 1);
 	}
     }
-  dataSize -= 1;
-  if(maxId == rhs_id)
+  dataSize -= 1;                   // update dataSize
+  if(maxId == rhs_id)              // update maxId if necessary
     {
       maxId = findMaxId();
     }
@@ -292,17 +301,61 @@ void DataSet::remove(const size_t& rhs_id)
 // this function calls the findPosition() function to get the correct position to update the item
 void DataSet::update(const size_t& rhs_id, const vector<int>& scores)
 {
-  if(scores.size() != listSize)
+  if(scores.size() != listSize)            // number of scores must match number of sorted lists
     {
       cout << "Invalid input for scores" << endl;
       return;
     }
+  
   for(int i=0; i<lists.size(); i++)
     {
+      // call findPosition() function to get the correct position of a data item
       size_t myPosition = findPosition(lists[i], rhs_id);
-      lists[i][myPosition].setScore(scores[i]);
+      if(myPosition == lists[i].size())      // check if the id exist
+	{
+	  cout << "Non exist id" << endl;
+	  return;
+	}
+      lists[i][myPosition].setScore(scores[i]);  // update the scores
+      // after updating the score, need to rearrange the lists to maintaince the sorted property
+
+      // if the score of the updated item is larger than that of the item before it 
+      if(myPosition > 0 && lists[i][myPosition] > lists[i][myPosition-1])
+	{
+	  for(int j=myPosition; j>=1; j--)
+	    {
+	      // swap two data item if their socre is reversed
+	      if(lists[i][j] > lists[i][j-1])
+		{
+		  // swap their positon value  before swapping the item
+		  size_t positionLeft = lists[i][j].getPosition();
+		  size_t positionRight = lists[i][j-1].getPosition();
+		  lists[i][j].setPosition(positionRight);
+		  lists[i][j-1].setPosition(positionLeft);
+		  // swap the data item
+		  std::swap(lists[i][j], lists[i][j-1]);
+		}
+	    }
+	}
+       // if the score of the updated item is smaller than that of the item after it 
+      if(myPosition < lists[i].size() - 1 && lists[i][myPosition+1] > lists[i][myPosition])
+	{
+	  for(int j=myPosition; j<lists[i].size()-1; j++)
+	    {
+	      // swap two data item if their socre is reversed
+	      if(lists[i][j+1] > lists[i][j])
+		{
+		  // swap their positon value  before swapping the item
+		  int positionLeft = lists[i][j+1].getPosition();
+		  int positionRight = lists[i][j].getPosition();
+		  lists[i][j+1].setPosition(positionRight);
+		  lists[i][j].setPosition(positionLeft);
+		  // swap the data item
+		  std::swap(lists[i][j], lists[i][j+1]);
+		}
+	    }
+	}
     }
-  // sort the list
 }
 
 // returns all scores of a data item in all lists
@@ -313,11 +366,12 @@ vector<int> DataSet::checkScore(const size_t& rhs_id) const
   vector<int> scores;
   if(rhs_id == 0)
     {
-		cout << "Invalid id" << endl;
-		return scores;
+      cout << "Invalid id" << endl;
+      return scores;
     }
-  for(auto oneList: lists)
+  for(auto& oneList: lists)
     {
+      // call findPosition() function to get the correct position of the data item
       size_t myPosition = findPosition(oneList, rhs_id);
       if(myPosition == oneList.size())
         {
@@ -342,10 +396,10 @@ void DataSet::print() const
   cout << "The max id is " << maxId << endl;
   cout << "There are " << listSize << " lists" << endl << endl; 
   int counter = 1;
-  for(auto oneList: lists)
+  for(auto& oneList: lists)
     {
       cout << "list " << counter++ << ":" << endl;
-      for(auto oneItem: oneList)
+      for(auto& oneItem: oneList)
 	{
 	  cout << std::left << std::setw(6) << oneItem.getId() << " "
 	       << std::left << std::setw(6) << oneItem.getScore() << " "
@@ -381,7 +435,7 @@ size_t DataSet::findMaxId() const
       return 0;
     }
   size_t res = 0;
-  for(auto oneItem: lists[0])
+  for(auto& oneItem: lists[0])
     {
       if(oneItem.getId() > res)
 	{
@@ -394,6 +448,7 @@ size_t DataSet::findMaxId() const
 // returns the position of data item in a sorted list
 size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_id) const
 {
+  // if the id is non-exist, return the end positon of the list
   if(rhs_id == 0)
     {
       cout << "Invalid id" << endl;
@@ -401,7 +456,7 @@ size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_
     }
   for(int i=0; i<oneList.size(); i++)
     {
-      if(oneList[i].getId() == rhs_id)
+      if(oneList[i].getId() == rhs_id)     // if found, return the index
 	{
 	  return i;
 	}
@@ -413,15 +468,17 @@ size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_
 // the inserted item should be inserted before this item of the returned index
 size_t DataSet::insertPosition(const vector<DataItem>& oneList, const int& rhs_score) const
 {
-  if(oneList.size() == 0)
+  if(oneList.size() == 0)            // if list is empty
     {
       cout << "empty list" << endl;
       return 0;
     }
-  if(oneList.back().getScore() >= rhs_score)
+  if(oneList.back().getScore() >= rhs_score)   // if the score is the smallest, return the end position of list
     {
       return oneList.size();
     }
+
+  // binary search to get the correct postion for insertion
   size_t start = 0;
   size_t end = oneList.size() - 1;
   while(start < end)

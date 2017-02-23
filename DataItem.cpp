@@ -206,3 +206,30 @@ void DataItem::update(const size_t& rhs_id, const int& rhs_score, const size_t& 
   position = rhs_position;
   listNum = rhs_listNum;
 }
+
+// overload < operator
+// if the socre is the same, the smaller id will be considered as larger item
+bool DataItem::operator<(const DataItem& rhs) const
+{
+  if(score < rhs.score)
+    {
+      return true;
+    }
+  else if(score == rhs.score)        // if score is the same, smaller id is larger
+    {
+      if(id > rhs.id)
+	{
+	  return true;
+	}
+    }
+  else
+    {
+      return false;
+    }
+}
+
+// overload > operator 
+bool DataItem::operator>(const DataItem& rhs) const
+{
+  return !(*this < rhs);
+}
