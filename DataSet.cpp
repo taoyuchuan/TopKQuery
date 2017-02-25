@@ -489,7 +489,7 @@ int DataSet::partition(vector<DataItem>& oneList,int first, int last)
 	j = first - 1;
 	for (i = first; i < last; i++)       
 	{
-		if (oneList[i].getScore() < oneList[last].getScore())
+		if (oneList[i] < oneList[last])
 		{
 			j++;
 			DataItem temp = oneList[i];
