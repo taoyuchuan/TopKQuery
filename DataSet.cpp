@@ -471,14 +471,14 @@ void DataSet::quickSort(vector<DataItem>& oneList, int first, int last)
 void DataSet::insertionSort(vector<DataItem>& oneList, int first, int last)
 {
 	int i, j;
-	int temp;
+	DataItem temp;
 	for (i = first; i<last+1; i++)
 	{
-		temp = oneList[i].getScore();
-		for (j = i; j>0 && temp < oneList[j - 1].getScore(); j--)
+		temp = oneList[i];
+		for (j = i; j>0 && temp < oneList[j - 1]; j--)
 		{
-			oneList[j].setScore(oneList[j - 1].getScore());
-			oneList[j - 1].setScore(temp);
+			oneList[j] = oneList[j - 1];
+			oneList[j - 1]= temp;
 		}
 	}
 }
