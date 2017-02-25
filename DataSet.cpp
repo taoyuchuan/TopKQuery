@@ -145,6 +145,7 @@ void DataSet::reInit(const size_t& rhs_dataSize, const size_t& rhs_listSize)
   clear();                        // clear the data set
   dataSize = rhs_dataSize;
   listSize = rhs_listSize;
+  maxId = rhs_dataSize;
   generateDataSet();              // regenerate data set
 }
 

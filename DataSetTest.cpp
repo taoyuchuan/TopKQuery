@@ -77,6 +77,12 @@ int main()
   vector<int> scores5{24, 1, 10};
   s3.update(6, scores5);
   s3.print();
+  cout << endl << endl << endl << endl;
+
+  DataSet s4(50, 5);
+  s4.print();
+  s4.reInit(30, 2);
+  s4.print();
   
   return 0;
 }
