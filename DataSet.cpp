@@ -476,7 +476,7 @@ void DataSet::insertionSort(vector<DataItem>& oneList, int first, int last)
 	for (i = first; i<last+1; i++)
 	{
 		temp = oneList[i];
-		for (j = i; j>0 && temp < oneList[j - 1]; j--)
+		for (j = i; j>0 && temp > oneList[j - 1]; j--)
 		{
 			oneList[j] = oneList[j - 1];
 			oneList[j - 1]= temp;
@@ -490,7 +490,7 @@ int DataSet::partition(vector<DataItem>& oneList,int first, int last)
 	j = first - 1;
 	for (i = first; i < last; i++)       
 	{
-		if (oneList[i] < oneList[last])
+		if (oneList[i] > oneList[last])
 		{
 			j++;
 			DataItem temp = oneList[i];
