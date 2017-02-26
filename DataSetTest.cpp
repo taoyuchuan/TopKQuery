@@ -83,6 +83,10 @@ int main()
   s4.print();
   s4.reInit(30, 2);
   s4.print();
+
+  cout << endl << endl << endl << endl;
+  DataSet s5(100000, 8);
+  s5.print();
   
   return 0;
 }
