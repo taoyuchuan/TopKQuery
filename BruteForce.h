@@ -8,47 +8,63 @@ The actual implementation is in file BruteForce.cpp
 #ifndef BruteForce_H
 #define BruteForce_H
 
-#include <DataItem.h>
-#include <DataSet.h>
+#include "DataItem.h"
+#include "DataSet.h"
+#include <cstdio>
+
+// self-defined struct to store the id and overall score of data item
+struct DataOverallScore
+{
+  size_t id;              // id of selected data item
+  int overallScore;       // overall score of data item
+};
+
+// overload comparison operator for DataOverallScore
+bool operator<(const DataOverallScore& lhs, const DataOverallScore& rhs);
+bool operator>(const DataOverallScore& lhs, const DataOverallScore& rhs);
 
 class BruteForce
 {
   public:
     // constructors
     BruteForce();
-	BruteForce(const DataSet& rhs_dataSet, const size_t& rhs_topK);
-	BruteForce(const BruteForce& rhs);
-	BruteForce(BruteForce&& rhs);
-	BruteForce& operator=(const BruteForce& rhs);
-	BruteForce& operator=(BruteForce&& rhs);
+    BruteForce(const DataSet& rhs_dataSet, const size_t& rhs_topK);
+    BruteForce(const BruteForce& rhs);
+    BruteForce(BruteForce&& rhs);
+    BruteForce& operator=(const BruteForce& rhs);
+    BruteForce& operator=(BruteForce&& rhs);
 	
-	// destructor
-	~BruteForce();
+    // destructor
+    ~BruteForce();
 	
-	// re-initializer
-	void reInit(const DataSet& rhs_dataSet, const size_t& rhs_topK);
+    // re-initializer
+    void reInit(const DataSet& rhs_dataSet, const size_t& rhs_topK);
 	
-	// get functions
-	DataSet& getDataSet() const;
-	size_t getTopK() const;
-	vector<DataItem>& getTopKQuery() const;
+    // get functions
+    DataSet getDataSet() const;
+    size_t getTopK() const;
+    vector<DataOverallScore> getTopKQuery() const;
+    vector<DataOverallScore> getAllData() const;
 	
-	// set functions
-	void setDataSet(const DataSet& rhs_dataSet);
-	void setTopK(const size_t& rhs_topK);
-	void setTopKQuery(const vector<DataItem>& rhs_topKQuery);
+    // set functions
+    void setDataSet(const DataSet& rhs_dataSet);
+    void setTopK(const size_t& rhs_topK);
+    void setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery);
+    void setAllData(const vector<DataOverallScore>& rhs_allData);
 	
-	// function that will implement brute force algorithm
-	void bruteForceSolution();
+    // function that will implement brute force algorithm
+    void bruteForceSolution();
+    void printTopK();
 	
   private:
     // private data member
     DataSet dataSet;                    // a dataset that is included in the class
-	size_t topK;                        // stores the value of top K
-	vector<DataItem> topKQuery;         // store the result of topK query
-	
-	// helper functions 
-	void clear();
+    size_t topK;                        // stores the value of top K
+    vector<DataOverallScore> topKQuery;         // store the result of topK query
+    vector<DataOverallScore> allData;           // store the id and overall scores for all data item
+      
+    // helper functions 
+    void clear();
 };
 
 #endif

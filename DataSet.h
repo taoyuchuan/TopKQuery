@@ -53,6 +53,9 @@ class DataSet
     // print function
     void print() const;
 
+    // clear function
+    void clear(); 
+
   private:
     // private data member
     size_t dataSize;                      // stores number of data items
@@ -60,8 +63,7 @@ class DataSet
     size_t maxId;                         // stores the largest id of data items in list
     vector<vector<DataItem>> lists;       // sotres all the sorted lists
 	
-    // private modifier for data set
-    void clear();                          
+    // private modifier for data set                         
     void generateDataSet();
 	void sort(vector<DataItem>& oneList);
 	void quickSort(vector<DataItem>& oneList, int first, int last);
