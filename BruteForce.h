@@ -10,18 +10,8 @@ The actual implementation is in file BruteForce.cpp
 
 #include "DataItem.h"
 #include "DataSet.h"
+#include "DataOverallScore.h"
 #include <cstdio>
-
-// self-defined struct to store the id and overall score of data item
-struct DataOverallScore
-{
-  size_t id;              // id of selected data item
-  int overallScore;       // overall score of data item
-};
-
-// overload comparison operator for DataOverallScore
-bool operator<(const DataOverallScore& lhs, const DataOverallScore& rhs);
-bool operator>(const DataOverallScore& lhs, const DataOverallScore& rhs);
 
 class BruteForce
 {

@@ -9,34 +9,6 @@ Implementation for all member functions for class BruteForce
 
 using namespace std;
 
-// overload < comparison operator for DataOverallScore 
-// the comparison is first based on overall score
-// if overall score is the same, the one with smaller id is considered as larger
-bool operator<(const DataOverallScore& lhs, const DataOverallScore& rhs)
-{
-  if(lhs.overallScore < rhs.overallScore)
-    {
-      return true;
-    }
-  else if(lhs.overallScore == rhs.overallScore)
-    {
-      if(lhs.id > rhs.id)
-	{
-	  return true;
-	}
-    }
-  else
-    {
-      return false;
-    }
-}
-
-// overload > comparison operator
-bool operator>(const DataOverallScore& lhs, const DataOverallScore& rhs)
-{
-  return !(lhs < rhs);
-}
-
 // default constructor
 // calls the default constructor of class DataSet to initialize data set
 // default value for top K is defined as 3
@@ -216,16 +188,18 @@ void BruteForce::bruteForceSolution()
   for(auto& oneItem: allLists[0])
     {
       DataOverallScore temp;
-      temp.id = oneItem.getId();
-      temp.overallScore = oneItem.getScore();
-      allData[temp.id-1] = temp;
+      temp.setId(oneItem.getId());
+      temp.setOverallScore(oneItem.getScore());
+      allData[temp.getId()-1] = temp;
     }
   // add the all the local scores to the corresponding place
   for(int i=1; i<allLists.size(); i++)
     {
       for(int j=0; j<allLists[i].size(); j++)
 	{
-	  allData[allLists[i][j].getId()-1].overallScore += allLists[i][j].getScore();
+	  int temp1 = allLists[i][j].getScore();
+	  int temp2 = allData[allLists[i][j].getId()-1].getOverallScore();
+	  allData[allLists[i][j].getId()-1].setOverallScore(temp1 + temp2);
 	}
     }
   /*
@@ -276,8 +250,8 @@ void BruteForce::printTopK()
   cout << std::left << std::setw(20) << "Id" << std::left << std::setw(20) << "Overall Score" << endl;
   for(auto& oneItem: topKQuery)
     {
-      cout << std::left <<std::setw(20) << oneItem.id
-	   << std::left << std::setw(20) << oneItem.overallScore << endl;
+      cout << std::left <<std::setw(20) << oneItem.getId()
+	   << std::left << std::setw(20) << oneItem.getOverallScore() << endl;
     }
 }
 
