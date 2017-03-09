@@ -10,31 +10,39 @@ Implementation for all member functions for class BruteForce
 using namespace std;
 
 // default constructor
-// calls the base class default constructor to initialize data set
+// calls the default constructor of class DataSet to initialize data set
 // default value for top K is defined as 3
-BruteForce::BruteForce():TopKAlgorithm()
+BruteForce::BruteForce():dataSet()
 {
+  topK = 3;
 }
 
 // constructor
-// call base class constructor
 // data set and topK is provided as the parameter
 BruteForce::BruteForce(const DataSet& rhs_dataSet, const size_t& rhs_topK)
-  :TopKAlgorithm(rhs_dataSet, rhs_topK)
-{ 
+{
+  if(rhs_dataSet.getDataSize() < rhs_topK)
+    {
+      cout << "Incorrect value of topK";
+      return;
+    }
+  dataSet = rhs_dataSet;
+  topK = rhs_topK;
 }
 
 // copy constructor
 BruteForce::BruteForce(const BruteForce& rhs)
-  :TopKAlgorithm(rhs)
 {
+  dataSet = rhs.dataSet;
+  topK = rhs.topK;
   topKQuery = rhs.topKQuery;
 }
 
 // move constructor
 BruteForce::BruteForce(BruteForce&& rhs)
-  :TopKAlgorithm(std::move(rhs))
 {
+  dataSet = std::move(rhs.dataSet);
+  topK = std::move(rhs.topK);
   topKQuery = std::move(rhs.topKQuery);
 }
 
@@ -66,6 +74,32 @@ BruteForce::~BruteForce()
 {
 }
 
+// re-construct the data set and topK
+// new data set and topK value are provided
+void BruteForce::reInit(const DataSet& rhs_dataSet, const size_t& rhs_topK)
+{
+  if(rhs_dataSet.getDataSize() < rhs_topK)
+    {
+      cout << "Incorrect value of topK";
+      return;
+    }
+  clear();
+  dataSet = rhs_dataSet;
+  topK = rhs_topK;
+}
+
+// return the inside data set
+DataSet BruteForce::getDataSet() const
+{
+  return dataSet;
+}
+
+// return the value of topK
+size_t BruteForce::getTopK() const
+{
+  return topK;
+}
+
 // return top k query result
 vector<DataOverallScore> BruteForce::getTopKQuery() const
 {
@@ -76,6 +110,34 @@ vector<DataOverallScore> BruteForce::getTopKQuery() const
 vector<DataOverallScore> BruteForce::getAllData() const
 {
   return allData;
+}
+
+// re set the data set
+void BruteForce::setDataSet(const DataSet& rhs_dataSet)
+{
+  if(rhs_dataSet.getDataSize() > 0)
+    {
+      dataSet = rhs_dataSet;
+    }
+  else
+    {
+      cout << "Empty data set" << endl;
+      return;
+    }
+}
+
+// set the value of top k
+void BruteForce::setTopK(const size_t& rhs_topK)
+{
+  if(rhs_topK > 0)
+    {
+      topK = rhs_topK;
+    }
+  else
+    {
+      cout << "Incorrect value of topK" << endl;
+      return;
+    }
 }
 
 // set the value of topKQuery
@@ -197,7 +259,8 @@ void BruteForce::printTopK()
 // clear the BruteForce class
 void BruteForce::clear()
 {
-  TopKAlgorithm::clear();
+  dataSet.clear();
+  topK = 0;
   allData.clear();
   topKQuery.clear();
 }
