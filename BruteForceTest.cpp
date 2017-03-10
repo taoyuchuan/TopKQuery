@@ -24,6 +24,13 @@ int main()
   cout << "time for brute force algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
   myBF2.printTopK();
   cout << endl << endl;
+
+  myBF1.clear();
+  myBF1 = myBF2;
+  myBF1.printTopK();
+  myBF1.bruteForceSolution();
+  myBF1.printTopK();
+  cout << endl << endl;
   
   return 0;
 }

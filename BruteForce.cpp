@@ -28,6 +28,7 @@ BruteForce::BruteForce(const DataSet& rhs_dataSet, const size_t& rhs_topK)
 BruteForce::BruteForce(const BruteForce& rhs)
   :TopKAlgorithm(rhs)
 {
+  allData = rhs.allData;
   topKQuery = rhs.topKQuery;
 }
 
@@ -35,6 +36,7 @@ BruteForce::BruteForce(const BruteForce& rhs)
 BruteForce::BruteForce(BruteForce&& rhs)
   :TopKAlgorithm(std::move(rhs))
 {
+  allData = std::move(rhs.allData);
   topKQuery = std::move(rhs.topKQuery);
 }
 
@@ -56,6 +58,7 @@ BruteForce& BruteForce::operator=(BruteForce&& rhs)
     {
       std::swap(dataSet, rhs.dataSet);
       std::swap(topK, rhs.topK);
+      std::swap(allData, rhs.allData);
       std::swap(topKQuery, rhs.topKQuery);
     }
   return *this;

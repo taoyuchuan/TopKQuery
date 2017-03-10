@@ -49,6 +49,9 @@ class DataSet
 	
     // check score function
     vector<int> checkScore(const size_t& rhs_id) const;
+
+    // find the position of the data item in a sorted list
+    size_t findPosition(const vector<DataItem>& oneList, const size_t& rhs_id) const;
 	
     // print function
     void print() const;
@@ -72,7 +75,6 @@ class DataSet
 	
     // private helper function to generate data set
     size_t findMaxId() const;
-    size_t findPosition(const vector<DataItem>& oneList, const size_t& rhs_id) const;
     size_t insertPosition(const vector<DataItem>& oneList, const int& rhs_score) const;
 };
 
