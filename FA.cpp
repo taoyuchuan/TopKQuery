@@ -179,22 +179,13 @@ void FA::FASolution()
 	  if(idTimes.count(tempId) == 0) 
 	    {
 	      idTimes[tempId] = 1;    // set the counter as 1 for the first time the id has been seen
+	      idMap[tempId].resize(allLists.size(), 0);       // initialize the map vector
+	      idMap[tempId][i] = tempDataItem.getScore();     // set the corresponding local score
 	    }
 	  // if id has seen, add the times counter
 	  else                             
 	    {
 	      idTimes[tempId] += 1;
-	    }
-
-	  // if the id has not been seen
-	  if(idMap.count(tempId) == 0)
-	    {
-	      idMap[tempId].resize(allLists.size(), 0);       // initialize the map vector
-	      idMap[tempId][i] = tempDataItem.getScore();     // set the corresponding local score
-	    }
-	  // if the id has been seen
-	  else
-	    {
 	      idMap[tempId][i] = tempDataItem.getScore();     // set the corresponding local score
 	    }
 
