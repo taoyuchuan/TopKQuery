@@ -40,7 +40,8 @@ class BruteForce: public TopKAlgorithm
 	
     // function that will implement brute force algorithm
     void bruteForceSolution();
-
+    void bruteForceSolution2();
+    
     // print function
     void printTopK();
 

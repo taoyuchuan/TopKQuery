@@ -143,12 +143,74 @@ void BruteForce::bruteForceSolution()
 	  allData[allLists[i][j].getId()-1].setOverallScore(temp1 + temp2);
 	}
     }
-  /*
-  for(auto& x: allData)
+
+  // using priority queue to store the top K
+  priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> myPriorityQueue;
+  for(auto& oneItem: allData)
     {
-      cout << x.id << " " << x.overallScore << endl;
+      if(myPriorityQueue.size() < topK)
+	{
+	  myPriorityQueue.push(oneItem);
+	}
+      else
+	{
+	  if(myPriorityQueue.top() < oneItem)
+	    {
+	      myPriorityQueue.pop();
+	      myPriorityQueue.push(oneItem);
+	    }
+	}
     }
-  */
+  
+  // resize the topKQuery vector
+  topKQuery.resize(topK);
+
+  // store the top-k query result in topKQuery vector
+  size_t index = topK - 1;
+  while(!myPriorityQueue.empty())
+    {
+      topKQuery[index] = myPriorityQueue.top();
+      myPriorityQueue.pop();
+      index--;
+    }
+}
+
+// the second method to implement brute force
+// access the element of every list one by one
+// comparable to other method as the sequential access
+void BruteForce::bruteForceSolution2()
+{
+  // check the input value is correct
+  if(dataSet.getDataSize() <= 0 || topK <= 0)
+    {
+      cout << "Invalid data set or invalid topK value" << endl;
+      return;
+    }
+
+  // retrive the dataset for top-k query
+  vector<vector<DataItem>> allLists = dataSet.getLists();
+  // resize the allData to the size of data size
+  allData.resize(dataSet.getDataSize());
+  
+  // nested for loops sum up all the local scores of every id and store them in allData vector
+  int j = 0;
+  while(j < dataSet.getDataSize())
+    {
+      for(int i=0; i<allLists.size(); i++)
+        {
+	  DataItem tempItem = allLists[i][j];
+	  if(allData[tempItem.getId()-1].getId() == 0)
+	    {
+	      allData[tempItem.getId()-1].setId(tempItem.getId());
+	    }
+	  int temp1 = tempItem.getScore();
+	  int temp2 = allData[tempItem.getId()-1].getOverallScore();
+	  allData[allLists[i][j].getId()-1].setOverallScore(temp1 + temp2);
+        }
+      j++;
+    }
+
+  // using priority queue to store the top K
   priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> myPriorityQueue;
   for(auto& oneItem: allData)
     {

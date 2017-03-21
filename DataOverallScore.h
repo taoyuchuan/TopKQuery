@@ -10,6 +10,9 @@ self-defined class to store the id and overall score of data item
 class DataOverallScore
 {
   public:
+    // constructor
+    DataOverallScore();
+    
     // get functions
     size_t getId() const;
     int getOverallScore() const;

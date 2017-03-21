@@ -3,6 +3,13 @@
 
 using namespace std;
 
+// default constructor
+DataOverallScore::DataOverallScore()
+{
+  id = 0;
+  overallScore = 0;
+}
+
 // return the id of data item
 size_t DataOverallScore::getId() const
 {
