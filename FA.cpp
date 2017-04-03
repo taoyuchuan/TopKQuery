@@ -70,12 +70,6 @@ FA::~FA()
 {
 }
 
-// return top k query result
-vector<DataOverallScore> FA::getTopKQuery() const
-{
-  return topKQuery;
-}
-
 // return the information of seen data item
 unordered_map<size_t, vector<int>> FA::getIdMap() const
 {
@@ -93,20 +87,6 @@ set<size_t> FA::getSeenAllList() const
 {
   return seenAllList;
 }  
-
-// set the value of topKQuery
-void FA::setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery)
-{
-  if(!rhs_topKQuery.empty())
-    {
-      topKQuery = rhs_topKQuery;
-    }
-  else
-    {
-      cout << "Invalid topKQuery value" << endl;
-      return;
-    }
-}
 
 // set the value of idMap
 void FA::setIdMap(const unordered_map<size_t, vector<int>>& rhs_idMap)
@@ -353,24 +333,6 @@ void FA::FASolution2()
     }
 }
 
-// function to print topK result
-void FA::printTopK()
-{
-  if(topKQuery.size() == 0)
-    {
-      cout << "No top-k query results" << endl;
-      return;
-    }
-  cout << "The results for the top " << topK << " queries on " << dataSet.getDataSize()
-       << " data items with " << dataSet.getListSize() << " lists by FA algorithm are:" << endl;
-  cout << std::left << std::setw(20) << "Id" << std::left << std::setw(20) << "Overall Score" << endl;
-  for(auto& oneItem: topKQuery)
-    {
-      cout << std::left <<std::setw(20) << oneItem.getId()
-	   << std::left << std::setw(20) << oneItem.getOverallScore() << endl;
-    }
-}
-
 // clear the FA class
 void FA::clear()
 {
@@ -378,15 +340,4 @@ void FA::clear()
   topKQuery.clear();
   idMap.clear();
   seenAllList.clear();
-}
-
-// sum the local score in a vector
-int FA::sumVector(const vector<int>& scoreVector) const
-{
-  int sum = 0;
-  for(auto& localScore: scoreVector)
-    {
-      sum += localScore;
-    }
-  return sum;
 }

@@ -96,6 +96,12 @@ size_t TopKAlgorithm::getTopK() const
   return topK;
 }
 
+// return top k query result
+vector<DataOverallScore> TopKAlgorithm::getTopKQuery() const
+{
+  return topKQuery;
+}
+
 // re set the data set
 void TopKAlgorithm::setDataSet(const DataSet& rhs_dataSet)
 {
@@ -124,9 +130,52 @@ void TopKAlgorithm::setTopK(const size_t& rhs_topK)
     }
 }
 
+// set the value of topKQuery
+void TopKAlgorithm::setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery)
+{
+  if(!rhs_topKQuery.empty())
+    {
+      topKQuery = rhs_topKQuery;
+    }
+  else
+    {
+      cout << "Invalid topKQuery value" << endl;
+      return;
+    }
+}
+
 // clear the TopKAlgorithm class
 void TopKAlgorithm::clear()
 {
   dataSet.clear();
   topK = 0;
+}
+
+// function to print topK result
+void TopKAlgorithm::printTopK()
+{
+  if(topKQuery.size() == 0)
+    {
+      cout << "No top-k query results" << endl;
+      return;
+    }
+  cout << "The results for the top " << topK << " queries on " << dataSet.getDataSize()
+       << " data items with " << dataSet.getListSize() << " lists by FA algorithm are:" << endl;
+  cout << std::left << std::setw(20) << "Id" << std::left << std::setw(20) << "Overall Score" << endl;
+  for(auto& oneItem: topKQuery)
+    {
+      cout << std::left <<std::setw(20) << oneItem.getId()
+	   << std::left << std::setw(20) << oneItem.getOverallScore() << endl;
+    }
+}
+
+// sum the local score in a vector
+int TopKAlgorithm::sumVector(const vector<int>& scoreVector) const
+{
+  int sum = 0;
+  for(auto& localScore: scoreVector)
+    {
+      sum += localScore;
+    }
+  return sum;
 }

@@ -34,18 +34,27 @@ class TopKAlgorithm
     // get functions
     DataSet getDataSet() const;
     size_t getTopK() const;
+ 	vector<DataOverallScore> getTopKQuery() const;
 	
     // set functions
     void setDataSet(const DataSet& rhs_dataSet);
     void setTopK(const size_t& rhs_topK);
+	void setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery);
 		
     // helper function to clear the private data
     void clear();
+
+	// print function
+	void printTopK();
 	
   protected:
-    // private data member
+    // protected data member
     DataSet dataSet;               // a dataset that is included in the class
     size_t topK;                   // stores the value of top K
+	vector<DataOverallScore> topKQuery;   // store the result of topK query
+
+	// helper function to return the sum of a vector
+	int sumVector(const vector<int>& scoreVector) const;
 };
 
 #endif

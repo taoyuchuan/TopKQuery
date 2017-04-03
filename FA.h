@@ -37,13 +37,11 @@ class FA: public TopKAlgorithm
     ~FA();
 	
     // get functions
-    vector<DataOverallScore> getTopKQuery() const;
     unordered_map<size_t, vector<int>> getIdMap() const;
     unordered_map<size_t, size_t> getIdTimes() const;
     set<size_t> getSeenAllList() const;
 	
     // set functions
-    void setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery);
     void setIdMap(const unordered_map<size_t, vector<int>>& rhs_idMap);
     void setIdTimes(const unordered_map<size_t, size_t>& rhs_idTimes);
     void setSeenAllList(const set<size_t>& rhs_seenAllList);
@@ -52,21 +50,14 @@ class FA: public TopKAlgorithm
     void FASolution();
     void FASolution2();
 
-    // print function
-    void printTopK();
-
     // helper function to clear the class data member
     void clear();
 	
   private:
     // private data member
-    vector<DataOverallScore> topKQuery;         // store the result of topK query
     unordered_map<size_t, vector<int>> idMap;   // store data item id and all the local score
     unordered_map<size_t, size_t> idTimes;      // store the number of times data item show up in all lists
     set<size_t> seenAllList;                    // store the id of data items seen in all list
-
-    // helper function
-    int sumVector(const vector<int>& scoreVector) const;
 };
 
 #endif
