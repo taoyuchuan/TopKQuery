@@ -1,6 +1,6 @@
 #include "DataItem.h"
 #include "DataSet.h"
-#include "FA.h"
+#include "BPA.h"
 #include <iostream>
 #include <ctime>
 
@@ -8,18 +8,18 @@ using namespace std;
 
 int main()
 {
-  FA myFA1;
-  myFA1.FASolution();
-  myFA1.printTopK();
+  BPA myBPA1;
+  myBPA1.BPASolution();
+  myBPA1.printTopK();
   cout << endl << endl;
-
+  
   DataSet myDataSet(20000, 5);
-  FA myFA2(myDataSet, 10);
+  BPA myBPA2(myDataSet, 10);
   int start = clock();
-  myFA2.FASolution();
+  myBPA2.BPASolution();
   int stop = clock();
-  cout << "time for FA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
-  myFA2.printTopK();
+  cout << "time for BPA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myBPA2.printTopK();
   cout << endl << endl;
   
   return 0;

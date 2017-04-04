@@ -148,6 +148,7 @@ void TopKAlgorithm::setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery)
 void TopKAlgorithm::clear()
 {
   dataSet.clear();
+  topKQuery.clear();
   topK = 0;
 }
 
@@ -160,7 +161,7 @@ void TopKAlgorithm::printTopK()
       return;
     }
   cout << "The results for the top " << topK << " queries on " << dataSet.getDataSize()
-       << " data items with " << dataSet.getListSize() << " lists by FA algorithm are:" << endl;
+       << " data items with " << dataSet.getListSize() << " lists are:" << endl;
   cout << std::left << std::setw(20) << "Id" << std::left << std::setw(20) << "Overall Score" << endl;
   for(auto& oneItem: topKQuery)
     {
