@@ -10,17 +10,17 @@ using namespace std;
 
 int main()
 {
-  DataSet myDataSet(50000, 5);
+  DataSet myDataSet(100000, 8);
 
-  BruteForce myBF(myDataSet, 5);
+  BruteForce myBF(myDataSet, 20);
   int start = clock();
-  myBF.bruteForceSolution();
+  myBF.bruteForceSolution2();
   int stop = clock();
   cout << "time for brute force algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
   myBF.printTopK();
   cout << endl << endl;
 
-  FA myFA(myDataSet, 5);
+  FA myFA(myDataSet, 20);
   start = clock();
   myFA.FASolution();
   stop = clock();
@@ -28,7 +28,7 @@ int main()
   myFA.printTopK();
   cout << endl << endl;
 
-  BPA myBPA(myDataSet, 5);
+  BPA myBPA(myDataSet, 20);
   start = clock();
   myBPA.BPASolution();
   stop = clock();

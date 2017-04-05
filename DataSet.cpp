@@ -77,17 +77,22 @@ DataSet::DataSet()
   vector<DataItem> temp3{dataitem1, dataitem2, dataitem3, dataitem4, dataitem5, dataitem6, dataitem7,
       dataitem8, dataitem9, dataitem10, dataitem11, dataitem12, dataitem13, dataitem14, dataitem15};
   lists.push_back(temp3);
+  
+  // creat indexing
+  createIndex();
 }
 
 // constructor for randomly generated scores
 // the number of data itme and sorted lists are provided
 // the score of each data item in each list will be randomly generated
+// indexing will be created after generating the data set
 DataSet::DataSet(const size_t& rhs_dataSize, const size_t& rhs_listSize)
 {
   dataSize = rhs_dataSize;
   listSize = rhs_listSize;
   maxId = rhs_dataSize;
   generateDataSet();
+  createIndex();
 }
 
 // copy constructor
@@ -97,6 +102,7 @@ DataSet::DataSet(const DataSet& rhs)
   listSize = rhs.listSize;
   maxId = rhs.maxId;
   lists = rhs.lists;
+  dataItemIndex = rhs.dataItemIndex;
 }
 
 // move constructor
@@ -106,6 +112,7 @@ DataSet::DataSet(DataSet&& rhs)
   listSize = std::move(rhs.listSize);
   maxId = std::move(rhs.maxId);
   lists = std::move(rhs.lists);
+  dataItemIndex = std::move(rhs.dataItemIndex);
 }
 
 // move assignment operator
@@ -117,6 +124,7 @@ DataSet& DataSet::operator=(DataSet&& rhs)
       std::swap(listSize, rhs.listSize);
       std::swap(maxId, rhs.maxId);
       std::swap(lists, rhs.lists);
+	  std::swap(dataItemIndex, rhs.dataItemIndex);
     }
   return *this;
 }
@@ -147,6 +155,7 @@ void DataSet::reInit(const size_t& rhs_dataSize, const size_t& rhs_listSize)
   listSize = rhs_listSize;
   maxId = rhs_dataSize;
   generateDataSet();              // regenerate data set
+  createIndex();                   // recreate indexing
 }
 
 // return the number of data item
@@ -165,6 +174,12 @@ size_t DataSet::getListSize() const
 size_t DataSet::getMaxId() const
 {
   return maxId;
+}
+
+// return the index of lists
+vector<map<size_t, size_t>> DataSet::getDataItemIndex() const
+{
+	return dataItemIndex;
 }
 
 // return all the sorted lists
@@ -215,6 +230,20 @@ void DataSet::setMaxId(const size_t& rhs_maxId)
     }
 }
 
+// set the index of lists
+void DataSet::setDataItemIndex(const vector<map<size_t, size_t>>& rhs_dataItemIndex)
+{
+  if(!rhs_dataItemIndex.empty())
+    {
+      dataItemIndex = rhs_dataItemIndex;
+    }
+  else
+    {
+      cout << "Invalid indexing" << endl;
+      return;
+    }
+}
+
 // set the sorted lists
 void DataSet::setLists(const vector<vector<DataItem>>& rhs_lists)
 {
@@ -259,6 +288,9 @@ void DataSet::insert(const vector<int>& scores)
     }
   dataSize += 1;                   // update dataSIze
   maxId += 1;                      // update maxId
+
+  clearIndex();                    // clear old indexing
+  createIndex();                   // create new indexing
 }
 
 // remove a data item from all lists
@@ -296,6 +328,9 @@ void DataSet::remove(const size_t& rhs_id)
     {
       maxId = findMaxId();
     }
+
+  clearIndex();                    // clear old index
+  createIndex();                   // create new index
 }
 
 // modify the score of a data item
@@ -358,30 +393,32 @@ void DataSet::update(const size_t& rhs_id, const vector<int>& scores)
 	    }
 	}
     }
+
+	clearIndex();                  // clear old index
+	createIndex();                 // create new indexing
 }
 
 // returns all scores of a data item in all lists
 // the id of the item will be searched is provided
 // this function calls the findPosition() function to get the correct position to search the item
-vector<int> DataSet::checkScore(const size_t& rhs_id) const
+vector<int> DataSet::checkScore(const size_t& rhs_id)
 {
-  vector<int> scores;
+  vector<int> scores(listSize);
   if(rhs_id == 0)
     {
       cout << "Invalid id" << endl;
       return scores;
     }
-  for(auto& oneList: lists)
-    {
-      // call findPosition() function to get the correct position of the data item
-      size_t myPosition = findPosition(oneList, rhs_id);
-      if(myPosition == oneList.size())
-        {
-          cout << "non exist id" << endl;
-          return scores;
-        }
-      scores.push_back(oneList[myPosition].getScore());
-    }
+  for(int i=0; i<listSize; i++)
+  {
+  	if(dataItemIndex[i].count(rhs_id) == 0)
+	{
+		cout << "Non exist id" << endl;
+		return scores;
+	}
+  	int position = dataItemIndex[i][rhs_id];
+	scores[i] = lists[i][position].getScore();
+  }
   return scores;
 }
 
@@ -412,6 +449,29 @@ void DataSet::print() const
     }
 }
 
+// print the index of lists to check
+void DataSet::printIndex() const
+{
+  if(dataItemIndex.size() == 0)
+    {
+      cout << "No indexing" << endl;
+      return;
+    }
+  cout << "There are " << dataSize << " data items" << endl;
+  cout << "There are " << listSize << " lists" << endl << endl; 
+  int counter = 1;
+  for(auto& oneIndex: dataItemIndex)
+    {
+      cout << "list " << counter++ << " indexing:" << endl;
+      for(auto& oneItem: oneIndex)
+	{
+	  cout << std::left << std::setw(6) << oneItem.first << " "
+	       << std::left << std::setw(6) << oneItem.second << endl;
+	}
+      cout << endl;
+    }
+}
+
 // remove all content in data set
 void DataSet::clear()
 {
@@ -419,6 +479,7 @@ void DataSet::clear()
   dataSize = 0;
   listSize = 0;
   maxId = 0;
+  dataItemIndex.clear();
 }
 
 // core function to construct data set with randomly generated socres
@@ -445,6 +506,25 @@ void DataSet::generateDataSet()
 		lists.push_back(list);
 		list.clear();
 	}
+}
+
+void DataSet::createIndex()
+{
+	dataItemIndex.resize(listSize);
+	for(int i=0; i<listSize; i++)
+	{
+		for(int j=0; j<lists[i].size(); j++)
+		{
+			size_t key = lists[i][j].getId();
+			size_t value = j;
+			dataItemIndex[i][key] = value;
+		}
+	}
+}
+
+void DataSet::clearIndex()
+{
+	dataItemIndex.clear();
 }
 
 void DataSet::sort(vector<DataItem>& oneList)
@@ -540,6 +620,22 @@ size_t DataSet::findPosition(const vector<DataItem>& oneList, const size_t& rhs_
 	}
     }
   return oneList.size();
+}
+
+// return the position of data item from indexing
+size_t DataSet::findPosition2(const size_t listNum, const size_t& rhs_id)
+{
+  if(rhs_id == 0)
+    {
+      cout << "Invalid id" << endl;
+      return dataSize;
+    }
+
+  if(dataItemIndex[listNum].count(rhs_id) == 1)
+  {
+  	return dataItemIndex[listNum][rhs_id];
+  }
+  return dataSize;
 }
 
 // returns the correct position of the data item that will be inserted

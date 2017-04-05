@@ -10,6 +10,7 @@ The actual implementation is in file DataSet.cpp
 #include "DataItem.h"
 #include <cstdio>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -34,12 +35,14 @@ class DataSet
     size_t getDataSize() const;
     size_t getListSize() const;
     size_t getMaxId() const;
+	vector<map<size_t, size_t>> getDataItemIndex() const;
     vector<vector<DataItem>> getLists() const;
 	
     // set functions
     void setDataSize(const size_t& rhs_dataSize);
     void setListSize(const size_t& rhs_listSize);
     void setMaxId(const size_t& rhs_maxId);
+	void setDataItemIndex(const vector<map<size_t, size_t>>& rhs_dataItemIndex);
     void setLists(const vector<vector<DataItem>>& rhs_lists);
 	
     // modifier functions
@@ -48,13 +51,17 @@ class DataSet
     void update(const size_t& rhs_id, const vector<int>& scores);
 	
     // check score function
-    vector<int> checkScore(const size_t& rhs_id) const;
+    vector<int> checkScore(const size_t& rhs_id);
 
     // find the position of the data item in a sorted list
     size_t findPosition(const vector<DataItem>& oneList, const size_t& rhs_id) const;
-	
+    size_t findPosition2(const size_t listNum, const size_t& rhs_id);
+
     // print function
     void print() const;
+
+	// print function for index
+	void printIndex() const;
 
     // clear function
     void clear(); 
@@ -65,13 +72,17 @@ class DataSet
     size_t listSize;                      // stores number of sorted lists
     size_t maxId;                         // stores the largest id of data items in list
     vector<vector<DataItem>> lists;       // sotres all the sorted lists
+	vector<map<size_t, size_t>> dataItemIndex;    // store the index of all data item in all lists
+
 	
     // private modifier for data set                         
     void generateDataSet();
-	void sort(vector<DataItem>& oneList);
-	void quickSort(vector<DataItem>& oneList, int first, int last);
-	int partition(vector<DataItem>& oneList,int first, int last);
-	void insertionSort(vector<DataItem>& oneList, int first, int last);
+	void createIndex();
+	void clearIndex();
+    void sort(vector<DataItem>& oneList);
+    void quickSort(vector<DataItem>& oneList, int first, int last);
+    int partition(vector<DataItem>& oneList,int first, int last);
+    void insertionSort(vector<DataItem>& oneList, int first, int last);
 	
     // private helper function to generate data set
     size_t findMaxId() const;

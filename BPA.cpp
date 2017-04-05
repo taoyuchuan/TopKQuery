@@ -176,7 +176,7 @@ void BPA::BPASolution()
 		// for loop update bitArray for best position and calculate the overall score of a data item
 	    for(int k=0; k<allLists.size(); k++)       
 	    {
-	  	  size_t position = dataSet.findPosition(allLists[k], tempId);  // call the find postion function
+	  	  size_t position = dataSet.findPosition2(k, tempId);  // call the find postion function
 		  tempOverallScore += allLists[k][position].getScore();
 		  bestPosition[k].bitArray[position] = true;
 	    }

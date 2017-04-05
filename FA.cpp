@@ -195,7 +195,7 @@ void FA::FASolution()
 	      continue;
 	    }
 	  // call the findPosition member function
-	  size_t position = dataSet.findPosition(allLists[i], oneItem.first);
+	  size_t position = dataSet.findPosition2(i, oneItem.first);
 	  localScore = allLists[i][position].getScore();
 	}
     }

@@ -88,5 +88,10 @@ int main()
   DataSet s5(100000, 8);
   s5.print();
   
+  cout << endl << endl << endl << endl;
+  DataSet s6(10, 3);
+  s6.print();
+  s6.printIndex();
+  
   return 0;
 }
