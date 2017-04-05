@@ -335,4 +335,8 @@ void BPA::clear()
 {
   TopKAlgorithm::clear();
   bestPosition.clear();
+  while(!topKQueue.empty())
+  {
+  	topKQueue.pop();
+  }
 }
