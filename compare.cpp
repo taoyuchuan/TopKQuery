@@ -6,12 +6,13 @@
 #include "BPA2.h"
 #include <iostream>
 #include <ctime>
+#include "TA.h"
 
 using namespace std;
 
 int main()
 {
-  DataSet myDataSet(100000, 8);
+  DataSet myDataSet(100000, 8,10);
 
   BruteForce myBF(myDataSet, 20);
   int start = clock();
@@ -28,6 +29,15 @@ int main()
   cout << "time for FA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
   myFA.printTopK();
   cout << endl << endl;
+
+  TA myTA(myDataSet, 20);
+  start = clock();
+  myTA.TASolution();
+  stop = clock();
+  cout << "time for TA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myTA.printTopK();
+  cout << endl << endl;
+
 
   BPA myBPA(myDataSet, 20);
   start = clock();

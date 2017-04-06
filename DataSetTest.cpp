@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-  // testing DataItem class
+  /*// testing DataItem class
   DataItem d0;
   d0.print();
   DataItem d1(1, 20, 1, 1);
@@ -92,6 +92,8 @@ int main()
   DataSet s6(10, 3);
   s6.print();
   s6.printIndex();
-  
+ */
+  DataSet s7(100,3,10);
+  s7.print(); 
   return 0;
 }

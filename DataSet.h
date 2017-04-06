@@ -20,6 +20,7 @@ class DataSet
     // constructors
     DataSet();
     DataSet(const size_t& rhs_dataSize, const size_t& rhs_listSize);
+    DataSet(const size_t& rhs_dataSize, const size_t& rhs_listSize, const size_t& rhs_parameter);
     DataSet(const DataSet& rhs);
     DataSet(DataSet&& rhs);
     DataSet& operator=(const DataSet& rhs);
@@ -77,6 +78,7 @@ class DataSet
 	
     // private modifier for data set                         
     void generateDataSet();
+	void generateDataSet2(int parameter);
 	void createIndex();
 	void clearIndex();
     void sort(vector<DataItem>& oneList);

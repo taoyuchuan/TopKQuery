@@ -95,6 +95,15 @@ DataSet::DataSet(const size_t& rhs_dataSize, const size_t& rhs_listSize)
   createIndex();
 }
 
+DataSet::DataSet(const size_t& rhs_dataSize, const size_t& rhs_listSize, const size_t& parameter)
+{
+  dataSize = rhs_dataSize;        
+  listSize = rhs_listSize;        
+  maxId = rhs_dataSize;
+  generateDataSet2(parameter);
+  createIndex();
+}
+
 // copy constructor
 DataSet::DataSet(const DataSet& rhs)
 {
@@ -507,6 +516,39 @@ void DataSet::generateDataSet()
 		list.clear();
 	}
 }
+
+void DataSet::generateDataSet2(int parameter)
+{
+        vector<DataItem> list;
+        srand(time(NULL));
+        for (int i = 0; i < listSize; i++)
+        {
+                for (int j = 0; j < dataSize; j++)
+                {
+                        DataItem* item = new DataItem;
+                        item->setId(j+1);
+                        item->setListNum(i+1);
+			if( i == 0)              
+                        	item->setScore(rand() %dataSize + 1);
+			else
+			{
+				if( rand()%2 == 0)
+					item->setScore(int((1 + parameter/100.0)*lists[i-1][findPosition(lists[i-1],j+1)].getScore()+0.5));
+				else
+					item->setScore(int((1 - parameter/100.0)*lists[i-1][findPosition(lists[i-1],j+1)].getScore()+0.5)); 
+			}
+                        list.push_back(*item);
+                }
+                sort(list);
+                for (int k = 0; k < list.size(); k++)
+                {
+                        list[k].setPosition(k+1);
+                }
+                lists.push_back(list);
+                list.clear();
+        }
+}
+
 
 void DataSet::createIndex()
 {
