@@ -533,20 +533,23 @@ void DataSet::generateDataSet2(int parameter)
 			else
 			{
 				if( rand()%2 == 0)
-					item->setScore(int((1 + parameter/100.0)*lists[i-1][findPosition(lists[i-1],j+1)].getScore()+0.5));
+					item->setScore(int((1 + parameter/100.0)*lists[i-1][j].getScore()+0.5));
 				else
-					item->setScore(int((1 - parameter/100.0)*lists[i-1][findPosition(lists[i-1],j+1)].getScore()+0.5)); 
+					item->setScore(int((1 - parameter/100.0)*lists[i-1][j].getScore()+0.5)); 
 			}
                         list.push_back(*item);
                 }
-                sort(list);
-                for (int k = 0; k < list.size(); k++)
-                {
-                        list[k].setPosition(k+1);
-                }
-                lists.push_back(list);
+		lists.push_back(list);
                 list.clear();
         }
+	for( int i = 0; i < listSize; i++)
+	{
+		sort(lists[i]);  
+                for (int k = 0; k < dataSize; k++)
+                {
+                        lists[i][k].setPosition(k+1);
+                }
+	}
 }
 
 
