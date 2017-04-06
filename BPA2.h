@@ -1,15 +1,15 @@
 /***************************************************************************
-Defines the header of BPA class
+Defines the header of BPA2 class
 The class inherits from TopKAlgorithm class
 Additional private data members, bestPosition and topKQueue are added
 bestPosition store the current seen best position for each list
 topKQueue store the current top k data item
 A user define struct BP is defined to maintain the best position 
-The actual implementation is in file BPA.cpp
+The actual implementation is in file BPA2.cpp
 ***************************************************************************/
 
-#ifndef BPA_H
-#define BPA_H
+#ifndef BPA2_H
+#define BPA2_H
 
 #include "DataItem.h"
 #include "DataSet.h"
@@ -22,33 +22,31 @@ The actual implementation is in file BPA.cpp
 
 using namespace std;
 
-class BPA: public TopKAlgorithm
+class BPA2: public TopKAlgorithm
 {
   public:
 
     // constructors
-    BPA();
-    BPA(const DataSet& rhs_dataSet, const size_t& rhs_topK);
-    BPA(const BPA& rhs);
-    BPA(BPA&& rhs);
-    BPA& operator=(const BPA& rhs);
-    BPA& operator=(BPA&& rhs);
+    BPA2();
+    BPA2(const DataSet& rhs_dataSet, const size_t& rhs_topK);
+    BPA2(const BPA2& rhs);
+    BPA2(BPA2&& rhs);
+    BPA2& operator=(const BPA2& rhs);
+    BPA2& operator=(BPA2&& rhs);
 	
     // destructor
-    ~BPA();
+    ~BPA2();
 	
     // get functions
 	priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> getTopKQueue() const;
 	vector<BP> getBestPosition() const;
-	set<size_t> getSeenDataItem() const;
 	
     // set functions
 	void setTopKQueue(const priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> rhs_topKQueue);
 	void setBestPosition(const vector<BP> rhs_bestPosition);
-	void setSeenDataItem(const set<size_t> rhs_seenDataItem);
 
-    // function that will implement BPA algorithm
-    void BPASolution();
+    // function that will implement BPA2 algorithm
+    void BPA2Solution();
 
     // helper function to clear the class data member
     void clear();
@@ -57,7 +55,6 @@ class BPA: public TopKAlgorithm
     // private data member
 	priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> topKQueue;
 	vector<BP> bestPosition;
-	set<size_t> seenDataItem;
 };
 
 #endif

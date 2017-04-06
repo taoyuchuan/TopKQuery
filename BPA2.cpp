@@ -1,8 +1,8 @@
 /**************************************************************
-Implementation for all member functions for class BPA algorithm
+Implementation for all member functions for class BPA2 algorithm
 **************************************************************/
 
-#include "BPA.h"
+#include "BPA2.h"
 #include <iostream>
 #include <limits.h>
 
@@ -12,7 +12,7 @@ using namespace std;
 // calls the base class default constructor to initialize data set
 // default value for number of lists is 3
 // default value for number of data item is 15
-BPA::BPA():TopKAlgorithm()
+BPA2::BPA2():TopKAlgorithm()
 {
 	// initialize the best position data structure
 	bestPosition.resize(3);     // default size of number of lists is 3, so resize the best position vector as 3
@@ -26,7 +26,7 @@ BPA::BPA():TopKAlgorithm()
 // constructor
 // call base class constructor
 // data set and topK is provided as the parameter
-BPA::BPA(const DataSet& rhs_dataSet, const size_t& rhs_topK)
+BPA2::BPA2(const DataSet& rhs_dataSet, const size_t& rhs_topK)
   :TopKAlgorithm(rhs_dataSet, rhs_topK)
 { 
 	// initialize best position data structure
@@ -39,32 +39,32 @@ BPA::BPA(const DataSet& rhs_dataSet, const size_t& rhs_topK)
 }
 
 // copy constructor
-BPA::BPA(const BPA& rhs):TopKAlgorithm(rhs)
+BPA2::BPA2(const BPA2& rhs):TopKAlgorithm(rhs)
 {
 	topKQueue = rhs.topKQueue;
 	bestPosition = rhs.bestPosition;
 }
 
 // move constructor
-BPA::BPA(BPA&& rhs):TopKAlgorithm(std::move(rhs))
+BPA2::BPA2(BPA2&& rhs):TopKAlgorithm(std::move(rhs))
 {
   topKQueue = std::move(rhs.topKQueue);
   bestPosition = std::move(rhs.bestPosition);
 }
 
 // copy assignment operator
-BPA& BPA::operator=(const BPA& rhs)
+BPA2& BPA2::operator=(const BPA2& rhs)
 {
   if(this != &rhs)
     {
-      BPA copy = rhs;
+      BPA2 copy = rhs;
       std::swap(*this, copy);
     }
   return *this;
 }
 
 // move assignment operator
-BPA& BPA::operator=(BPA&& rhs)
+BPA2& BPA2::operator=(BPA2&& rhs)
 {
   if(this != &rhs)
     {
@@ -78,31 +78,24 @@ BPA& BPA::operator=(BPA&& rhs)
 }
 
 // destructor
-BPA::~BPA()
+BPA2::~BPA2()
 {
 }
 
 // return the topK priority queue
-priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> BPA::getTopKQueue() const
+priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> BPA2::getTopKQueue() const
 {
 	return topKQueue;
 }
 
 // return the best position data structure
-vector<BP> BPA::getBestPosition() const
+vector<BP> BPA2::getBestPosition() const
 {
 	return bestPosition;
 }
 
-// return the seen data item so far
-set<size_t> BPA::getSeenDataItem() const
-{
-	return seenDataItem;
-}
-
-
 // set the top k priority queue
-void BPA::setTopKQueue(const priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> rhs_topKQueue)
+void BPA2::setTopKQueue(const priority_queue<DataOverallScore, vector<DataOverallScore>, greater<DataOverallScore>> rhs_topKQueue)
 {
 	if(!rhs_topKQueue.empty())
 	  {
@@ -116,7 +109,7 @@ void BPA::setTopKQueue(const priority_queue<DataOverallScore, vector<DataOverall
 }
 
 // set the best position data structure
-void BPA::setBestPosition(const vector<BP> rhs_bestPosition)
+void BPA2::setBestPosition(const vector<BP> rhs_bestPosition)
   {
   	if(!rhs_bestPosition.empty())
 	  {
@@ -129,24 +122,10 @@ void BPA::setBestPosition(const vector<BP> rhs_bestPosition)
 	  }
   }
 
-// set the seen data item set
-void BPA::setSeenDataItem(const set<size_t> rhs_seenDataItem)
-{
-  	if(!rhs_seenDataItem.empty())
-	  {
-		seenDataItem = rhs_seenDataItem;	
-	  }
-	else
-	  {
-	  	cout << "Invalid value of seen data item set" << endl;
-		return;
-	  }
-}
-
-// the core function to perform the BPA algorithm for top-k query
+// the core function to perform the BPA2 algorithm for top-k query
 // the top-K query result will be stored in topKQuery vector
 // the result will contain the id and overall score of top-k data item
-void BPA::BPASolution()
+void BPA2::BPA2Solution()
 {
   // check the input value is correct
   if(dataSet.getDataSize() <= 0 || topK <= 0)
@@ -159,37 +138,34 @@ void BPA::BPASolution()
   vector<vector<DataItem>> allLists = dataSet.getLists();
 
   int threshold = INT_MAX;  // threshold value, when reaches threshold, stop
-  int j = 0;  // counter for second index
   
   // while loop stops when the overall score of the data item on the top of priority is larger or equal than threshold
   while(topKQueue.empty() || topKQueue.top().getOverallScore() < threshold)
   {
     for(int i=0; i<allLists.size(); i++)
 	{
-	  DataItem tempDataItem = allLists[i][j];
+      int bp = bestPosition[i].bp;
+	  DataItem tempDataItem = allLists[i][bp+1];
 	  size_t tempId = tempDataItem.getId();
 	  int tempOverallScore = 0; 
-	  if(seenDataItem.count(tempId) == 0)      // check if the data item has already been seen
-	  {
-	  	seenDataItem.insert(tempId);           // insert the new seen item into set
 
-		// for loop update bitArray for best position and calculate the overall score of a data item
-	    for(int k=0; k<allLists.size(); k++)       
+      // for loop update bitArray for best position and calculate the overall score of a data item
+	  for(int k=0; k<allLists.size(); k++)       
 	    {
 	  	  size_t position = dataSet.findPosition2(k, tempId);  // call the find postion function
 		  tempOverallScore += allLists[k][position].getScore();
 		  bestPosition[k].bitArray[position] = true;
 	    }
 	 
-	    // maintain a priority queue to store top k result so far
-	    DataOverallScore tempDataOverallScore;
-	    tempDataOverallScore.setId(tempId);
-	    tempDataOverallScore.setOverallScore(tempOverallScore);
-	  	if(topKQueue.size() < topK)
+	  // maintain a priority queue to store top k result so far
+	  DataOverallScore tempDataOverallScore;
+	  tempDataOverallScore.setId(tempId);
+	  tempDataOverallScore.setOverallScore(tempOverallScore);
+	  if(topKQueue.size() < topK)
 	    {
 	  	  topKQueue.push(tempDataOverallScore);
 	    }
-	  	else
+	  else
 	    {
 	  	  if(topKQueue.top() < tempDataOverallScore)
 		  {
@@ -197,18 +173,17 @@ void BPA::BPASolution()
 			topKQueue.push(tempDataOverallScore);
 		  } 
 	    }
-	  }
 	}
 
 	// calculate best positions on all lists
 	for(int l=0; l<allLists.size(); l++)
 	{
-		while(bestPosition[l].bp < (int)(allLists[l].size()-1) && bestPosition[l].bitArray[bestPosition[l].bp+1] == true)
+		while(bestPosition[l].bp < (int)(allLists[l].size() - 1) && bestPosition[l].bitArray[bestPosition[l].bp+1] == true)
 		{
 			bestPosition[l].bp += 1;
 		}
 	}
- 
+	
 	// calculate threshold based on all the best positions
 	int tempThreshold = 0;
 	for(int l=0; l<allLists.size(); l++)
@@ -216,9 +191,6 @@ void BPA::BPASolution()
 		tempThreshold += allLists[l][bestPosition[l].bp].getScore();
 	}
 	threshold = tempThreshold;
-
-	// increase the counter
-    j++;                                       
   }
 
   // resize the topKQuery vector
@@ -235,7 +207,7 @@ void BPA::BPASolution()
 }
 
 // function to clear all private data member
-void BPA::clear()
+void BPA2::clear()
 {
   TopKAlgorithm::clear();
   bestPosition.clear();

@@ -13,6 +13,13 @@ The actual implementation is in file TopKAlgorithm.cpp
 #include "DataSet.h"
 #include "DataOverallScore.h"
 #include <cstdio>
+    
+// define a struct to help to maintain the best position in a list
+struct BP
+{
+  int bp;                   // value of best position
+  vector<bool> bitArray;       // bit array that can help to maintain the best position
+};
 
 class TopKAlgorithm
 {

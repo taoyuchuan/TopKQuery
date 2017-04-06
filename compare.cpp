@@ -3,6 +3,7 @@
 #include "BruteForce.h"
 #include "FA.h"
 #include "BPA.h"
+#include "BPA2.h"
 #include <iostream>
 #include <ctime>
 
@@ -34,6 +35,14 @@ int main()
   stop = clock();
   cout << "time for BPA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
   myBPA.printTopK();
+  cout << endl << endl;
+  
+  BPA2 myBPA2(myDataSet, 20);
+  start = clock();
+  myBPA2.BPA2Solution();
+  stop = clock();
+  cout << "time for BPA2 algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myBPA2.printTopK();
   cout << endl << endl;
   
   return 0;
