@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-  DataSet myDataSet(100000, 8,10);
+  DataSet myDataSet(100000, 8);
 
   BruteForce myBF(myDataSet, 20);
   int start = clock();
@@ -38,7 +38,6 @@ int main()
   myTA.printTopK();
   cout << endl << endl;
 
-
   BPA myBPA(myDataSet, 20);
   start = clock();
   myBPA.BPASolution();
@@ -53,6 +52,50 @@ int main()
   stop = clock();
   cout << "time for BPA2 algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
   myBPA2.printTopK();
+  cout << endl << endl;
+
+
+  DataSet myDataSet2(500000, 8,10);
+
+  BruteForce myBF2(myDataSet2, 20);
+  start = clock();
+  myBF2.bruteForceSolution2();
+  stop = clock();
+  cout << "time for brute force algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myBF2.printTopK();
+  cout << endl << endl;
+
+  FA myFA2(myDataSet2, 20);
+  start = clock();
+  myFA2.FASolution();
+  stop = clock();
+  cout << "time for FA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myFA2.printTopK();
+  cout << endl << endl;
+
+  TA myTA2(myDataSet2, 20);
+  start = clock();
+  myTA2.TASolution();
+  stop = clock();
+  cout << "time for TA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myTA2.printTopK();
+  cout << endl << endl;
+
+
+  BPA myBPA_2(myDataSet2, 20);
+  start = clock();
+  myBPA_2.BPASolution();
+  stop = clock();
+  cout << "time for BPA algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myBPA_2.printTopK();
+  cout << endl << endl;
+  
+  BPA2 myBPA2_2(myDataSet2, 20);
+  start = clock();
+  myBPA2_2.BPA2Solution();
+  stop = clock();
+  cout << "time for BPA2 algorithm: " << (stop - start) / double(CLOCKS_PER_SEC) << endl;
+  myBPA2_2.printTopK();
   cout << endl << endl;
   
   return 0;

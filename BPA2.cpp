@@ -5,6 +5,7 @@ Implementation for all member functions for class BPA2 algorithm
 #include "BPA2.h"
 #include <iostream>
 #include <limits.h>
+#include <set>
 
 using namespace std;
 
@@ -136,6 +137,7 @@ void BPA2::BPA2Solution()
 
   // retrive the dataset for top-k query
   vector<vector<DataItem>> allLists = dataSet.getLists();
+  set<size_t> seenId;
 
   int threshold = INT_MAX;  // threshold value, when reaches threshold, stop
   
@@ -149,23 +151,25 @@ void BPA2::BPA2Solution()
 	  size_t tempId = tempDataItem.getId();
 	  int tempOverallScore = 0; 
 
-      // for loop update bitArray for best position and calculate the overall score of a data item
-	  for(int k=0; k<allLists.size(); k++)       
+	  if(seenId.count(tempId) == 0)
+	  {
+        // for loop update bitArray for best position and calculate the overall score of a data item
+	    for(int k=0; k<allLists.size(); k++)       
 	    {
 	  	  size_t position = dataSet.findPosition2(k, tempId);  // call the find postion function
 		  tempOverallScore += allLists[k][position].getScore();
 		  bestPosition[k].bitArray[position] = true;
 	    }
 	 
-	  // maintain a priority queue to store top k result so far
-	  DataOverallScore tempDataOverallScore;
-	  tempDataOverallScore.setId(tempId);
-	  tempDataOverallScore.setOverallScore(tempOverallScore);
-	  if(topKQueue.size() < topK)
+	    // maintain a priority queue to store top k result so far
+	    DataOverallScore tempDataOverallScore;
+	    tempDataOverallScore.setId(tempId);
+	    tempDataOverallScore.setOverallScore(tempOverallScore);
+	    if(topKQueue.size() < topK)
 	    {
 	  	  topKQueue.push(tempDataOverallScore);
 	    }
-	  else
+	    else
 	    {
 	  	  if(topKQueue.top() < tempDataOverallScore)
 		  {
@@ -173,6 +177,7 @@ void BPA2::BPA2Solution()
 			topKQueue.push(tempDataOverallScore);
 		  } 
 	    }
+	  }
 	}
 
 	// calculate best positions on all lists
