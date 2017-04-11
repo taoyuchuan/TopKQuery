@@ -166,6 +166,7 @@ void BPA::BPASolution()
   {
     for(int i=0; i<allLists.size(); i++)
 	{
+	  sequenceAccess += 1;
 	  DataItem tempDataItem = allLists[i][j];
 	  size_t tempId = tempDataItem.getId();
 	  int tempOverallScore = 0; 
@@ -232,6 +233,10 @@ void BPA::BPASolution()
       topKQueue.pop();
       index--;
     }
+
+  randomAccess = sequenceAccess * (dataSet.getListSize() - 1);
+  size_t cost = (size_t)log(dataSet.getDataSize());
+  executionCost = sequenceAccess + cost * randomAccess;
 }
 
 // function to clear all private data member

@@ -257,6 +257,11 @@ void BruteForce::printTopK()
       cout << std::left <<std::setw(20) << oneItem.getId()
 	   << std::left << std::setw(20) << oneItem.getOverallScore() << endl;
     }
+  
+  cout << "Stop position: " << dataSet.getDataSize() << endl;
+  cout << "Number of sequencial access: " << dataSet.getDataSize() * dataSet.getListSize() << endl;
+  cout << "Number of random access: 0" << endl;
+  cout << "Execution cost: " << dataSet.getDataSize() * dataSet.getListSize() << endl;
 }
 
 // clear the BruteForce class

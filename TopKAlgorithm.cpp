@@ -5,6 +5,7 @@ Implementation for all member functions for class TopKAlgorithm
 #include "TopKAlgorithm.h"
 #include <iostream>
 #include <iomanip>
+#include <math.h>
 
 using namespace std;
 
@@ -14,6 +15,9 @@ using namespace std;
 TopKAlgorithm::TopKAlgorithm():dataSet()
 {
   topK = 3;
+  sequenceAccess = 0;
+  randomAccess = 0;
+  executionCost = 0;
 }
 
 // constructor
@@ -27,6 +31,9 @@ TopKAlgorithm::TopKAlgorithm(const DataSet& rhs_dataSet, const size_t& rhs_topK)
     }
   dataSet = rhs_dataSet;
   topK = rhs_topK;
+  sequenceAccess = 0;
+  randomAccess = 0;
+  executionCost = 0;
 }
 
 // copy constructor
@@ -34,6 +41,9 @@ TopKAlgorithm::TopKAlgorithm(const TopKAlgorithm& rhs)
 {
   dataSet = rhs.dataSet;
   topK = rhs.topK;
+  sequenceAccess = rhs.sequenceAccess;
+  randomAccess = rhs.randomAccess;
+  executionCost = rhs.executionCost;
 }
 
 // move constructor
@@ -41,6 +51,9 @@ TopKAlgorithm::TopKAlgorithm(TopKAlgorithm&& rhs)
 {
   dataSet = std::move(rhs.dataSet);
   topK = std::move(rhs.topK);
+  sequenceAccess = std::move(rhs.sequenceAccess);
+  randomAccess = std::move(rhs.randomAccess);
+  executionCost = std::move(rhs.executionCost);
 }
 
 // copy assignment operator
@@ -61,6 +74,9 @@ TopKAlgorithm& TopKAlgorithm::operator=(TopKAlgorithm&& rhs)
     {
       std::swap(dataSet, rhs.dataSet);
       std::swap(topK, rhs.topK);
+      std::swap(sequenceAccess, rhs.sequenceAccess);
+      std::swap(randomAccess, rhs.randomAccess);
+      std::swap(executionCost, rhs.executionCost);
     }
   return *this;
 }
@@ -82,6 +98,9 @@ void TopKAlgorithm::reInit(const DataSet& rhs_dataSet, const size_t& rhs_topK)
   clear();
   dataSet = rhs_dataSet;
   topK = rhs_topK;
+  sequenceAccess = 0;
+  randomAccess = 0;
+  executionCost = 0;
 }
 
 // return the inside data set
@@ -100,6 +119,24 @@ size_t TopKAlgorithm::getTopK() const
 vector<DataOverallScore> TopKAlgorithm::getTopKQuery() const
 {
   return topKQuery;
+}
+
+// return the number of sequence access
+size_t TopKAlgorithm::getSequenceAccess() const
+{
+	return sequenceAccess;
+}
+
+// return the number of random access
+size_t TopKAlgorithm::getRandomAccess() const
+{
+	return randomAccess;
+}
+
+// return the value of execution cost
+size_t TopKAlgorithm::getExecutionCost() const
+{
+	return executionCost;
 }
 
 // re set the data set
@@ -144,12 +181,57 @@ void TopKAlgorithm::setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery)
     }
 }
 
+// set the value of sequence access
+void TopKAlgorithm::setSequenceAccess(const size_t rhs_sequenceAccess)
+{
+	if(rhs_sequenceAccess >= 0)
+	{
+		sequenceAccess = rhs_sequenceAccess;
+	}
+	else
+	{
+		cout << "Invalid value" << endl;
+		return;
+	}
+}
+
+// set the value of random access
+void TopKAlgorithm::setRandomAccess(const size_t rhs_randomAccess)
+{
+	if(rhs_randomAccess >= 0)
+	{
+		randomAccess = rhs_randomAccess;
+	}
+	else
+	{
+		cout << "Invalid value" << endl;
+		return;
+	}
+}
+
+// set the value of execution cost
+void TopKAlgorithm::setExecutionCost(const size_t rhs_executionCost)
+{
+	if(rhs_executionCost >= 0)
+	{
+		executionCost = rhs_executionCost;
+	}
+	else
+	{
+		cout << "Invalid value" << endl;
+		return;
+	}
+}
+
 // clear the TopKAlgorithm class
 void TopKAlgorithm::clear()
 {
   dataSet.clear();
   topKQuery.clear();
   topK = 0;
+  sequenceAccess = 0;
+  randomAccess = 0;
+  executionCost = 0;
 }
 
 // function to print topK result
@@ -168,6 +250,10 @@ void TopKAlgorithm::printTopK()
       cout << std::left <<std::setw(20) << oneItem.getId()
 	   << std::left << std::setw(20) << oneItem.getOverallScore() << endl;
     }
+  cout << "Stop position: " << (sequenceAccess / dataSet.getListSize()) << endl;
+  cout << "Number of sequencial access: " << sequenceAccess << endl;
+  cout << "Number of random access: " << randomAccess << endl;
+  cout << "Number of execution cost: " << executionCost << endl;
 }
 
 // sum the local score in a vector

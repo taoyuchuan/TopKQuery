@@ -13,6 +13,7 @@ The actual implementation is in file TopKAlgorithm.cpp
 #include "DataSet.h"
 #include "DataOverallScore.h"
 #include <cstdio>
+#include <math.h>
     
 // define a struct to help to maintain the best position in a list
 struct BP
@@ -42,11 +43,17 @@ class TopKAlgorithm
     DataSet getDataSet() const;
     size_t getTopK() const;
  	vector<DataOverallScore> getTopKQuery() const;
+	size_t getSequenceAccess() const;
+	size_t getRandomAccess() const;
+	size_t getExecutionCost() const;
 	
     // set functions
     void setDataSet(const DataSet& rhs_dataSet);
     void setTopK(const size_t& rhs_topK);
 	void setTopKQuery(const vector<DataOverallScore>& rhs_topKQuery);
+	void setSequenceAccess(const size_t rhs_sequenceAccess);
+	void setRandomAccess(const size_t rhs_randomAccess);
+	void setExecutionCost(const size_t rhs_executionCost);
 		
     // helper function to clear the private data
     void clear();
@@ -59,6 +66,9 @@ class TopKAlgorithm
     DataSet dataSet;               // a dataset that is included in the class
     size_t topK;                   // stores the value of top K
 	vector<DataOverallScore> topKQuery;   // store the result of topK query
+	size_t sequenceAccess;
+	size_t randomAccess;
+	size_t executionCost;
 
 	// helper function to return the sum of a vector
 	int sumVector(const vector<int>& scoreVector) const;

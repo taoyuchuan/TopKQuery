@@ -152,6 +152,7 @@ void FA::FASolution()
     {
       for(int i=0; i<allLists.size(); i++)
 	{
+	  sequenceAccess += 1;
 	  DataItem tempDataItem = allLists[i][j];
 	  size_t tempId = tempDataItem.getId();
 	  
@@ -195,6 +196,7 @@ void FA::FASolution()
 	      continue;
 	    }
 	  // call the findPosition member function
+	  randomAccess += 1;
 	  size_t position = dataSet.findPosition2(i, oneItem.first);
 	  localScore = allLists[i][position].getScore();
 	}
@@ -236,6 +238,9 @@ void FA::FASolution()
       myPriorityQueue.pop();
       index--;
     }
+
+  size_t cost = (size_t)log(dataSet.getDataSize());
+  executionCost = sequenceAccess + cost * randomAccess;
   
   // cout << "The number of rows access is " << j << endl;
   // cout << "The number of item that require additional access is " << idMap.size() - seenAllList.size() << endl;

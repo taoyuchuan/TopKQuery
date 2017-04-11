@@ -146,6 +146,7 @@ void BPA2::BPA2Solution()
   {
     for(int i=0; i<allLists.size(); i++)
 	{
+	  sequenceAccess += 1;
       int bp = bestPosition[i].bp;
 	  DataItem tempDataItem = allLists[i][bp+1];
 	  size_t tempId = tempDataItem.getId();
@@ -153,6 +154,7 @@ void BPA2::BPA2Solution()
 
 	  if(seenId.count(tempId) == 0)
 	  {
+	  	seenId.insert(tempId);
         // for loop update bitArray for best position and calculate the overall score of a data item
 	    for(int k=0; k<allLists.size(); k++)       
 	    {
@@ -209,6 +211,10 @@ void BPA2::BPA2Solution()
       topKQueue.pop();
       index--;
     }
+  
+  randomAccess = sequenceAccess * (dataSet.getListSize() - 1);
+  size_t cost = (size_t)log(dataSet.getDataSize());
+  executionCost = sequenceAccess + cost * randomAccess;
 }
 
 // function to clear all private data member

@@ -64,6 +64,7 @@ void TA::TASolution()
   {
      for (int j =0; j < dataSet.getListSize(); j++)
      {
+	   sequenceAccess += 1;
        DataItem tempDataItem = allLists[j][i];
        size_t tempId = tempDataItem.getId();
        threshold += tempDataItem.getScore();
@@ -101,6 +102,10 @@ void TA::TASolution()
     myPriorityQueue.pop();
     index--;
   }
+
+  randomAccess = sequenceAccess * (dataSet.getListSize() - 1);
+  size_t cost = (size_t)log(dataSet.getDataSize());
+  executionCost = sequenceAccess + cost * randomAccess;
 }
 
 void TA::clear()
