@@ -151,35 +151,35 @@ void BPA2::BPA2Solution()
 	  DataItem tempDataItem = allLists[i][bp+1];
 	  size_t tempId = tempDataItem.getId();
 	  int tempOverallScore = 0; 
-
-	  if(seenId.count(tempId) == 0)
-	  {
-	  	seenId.insert(tempId);
-        // for loop update bitArray for best position and calculate the overall score of a data item
-	    for(int k=0; k<allLists.size(); k++)       
+	  
+      // for loop update bitArray for best position and calculate the overall score of a data item
+	  for(int k=0; k<allLists.size(); k++)       
 	    {
 	  	  size_t position = dataSet.findPosition2(k, tempId);  // call the find postion function
 		  tempOverallScore += allLists[k][position].getScore();
 		  bestPosition[k].bitArray[position] = true;
 	    }
 	 
-	    // maintain a priority queue to store top k result so far
-	    DataOverallScore tempDataOverallScore;
-	    tempDataOverallScore.setId(tempId);
-	    tempDataOverallScore.setOverallScore(tempOverallScore);
-	    if(topKQueue.size() < topK)
-	    {
-	  	  topKQueue.push(tempDataOverallScore);
-	    }
-	    else
-	    {
-	  	  if(topKQueue.top() < tempDataOverallScore)
-		  {
-			topKQueue.pop();
-			topKQueue.push(tempDataOverallScore);
-		  } 
-	    }
-	  }
+	  // maintain a priority queue to store top k result so far
+	  if(seenId.count(tempId) == 0)
+		{
+		  seenId.insert(tempId);
+	      DataOverallScore tempDataOverallScore;
+	      tempDataOverallScore.setId(tempId);
+	      tempDataOverallScore.setOverallScore(tempOverallScore);
+	      if(topKQueue.size() < topK)
+	      {
+	  	    topKQueue.push(tempDataOverallScore);
+	      }
+	      else
+	      {
+	  	    if(topKQueue.top() < tempDataOverallScore)
+		    {
+			  topKQueue.pop();
+			  topKQueue.push(tempDataOverallScore);
+		    } 
+	      }
+		}
 	}
 
 	// calculate best positions on all lists

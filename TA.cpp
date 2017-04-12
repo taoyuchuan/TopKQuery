@@ -68,26 +68,26 @@ void TA::TASolution()
        DataItem tempDataItem = allLists[j][i];
        size_t tempId = tempDataItem.getId();
        threshold += tempDataItem.getScore();
-       if(idTimes.count(tempId) == 0)
-       {
+       vector<int> allScore = dataSet.checkScore(tempId);
+	   if(idTimes.count(tempId) == 0)
+	   {
          DataOverallScore temp;
-         idTimes[tempId] = 1;
-         vector<int> allScore = dataSet.checkScore(tempId);
+		 idTimes[tempId] = 1;
          temp.setId(tempId);
          temp.setOverallScore(sumVector(allScore));
          if(myPriorityQueue.size() < topK)
-	 {
-	   myPriorityQueue.push(temp);
-	 }
+	       {
+	         myPriorityQueue.push(temp);
+	       }
          else
-         {
-	   if(myPriorityQueue.top() < temp)
-	   {
-	     myPriorityQueue.pop();
-	     myPriorityQueue.push(temp);
+           {
+	         if(myPriorityQueue.top() < temp)
+	           {
+	             myPriorityQueue.pop();
+	             myPriorityQueue.push(temp);
+	           }
+	       }
 	   }
-	 }
-       }
      }
      if( myPriorityQueue.size() == topK && myPriorityQueue.top().getOverallScore() >= threshold)
        break;

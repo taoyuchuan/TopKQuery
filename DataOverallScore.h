@@ -12,6 +12,14 @@ class DataOverallScore
   public:
     // constructor
     DataOverallScore();
+	DataOverallScore(const size_t rhs_id, const int rhs_overallScore);
+	DataOverallScore(const DataOverallScore& rhs);
+	DataOverallScore(DataOverallScore&& rhs);
+	DataOverallScore& operator=(const DataOverallScore& rhs);
+	DataOverallScore& operator=(DataOverallScore&& rhs);
+
+	// destructor
+	~DataOverallScore();
     
     // get functions
     size_t getId() const;
@@ -24,6 +32,9 @@ class DataOverallScore
     // overload comparison operator for DataOverallScore
     bool operator<(const DataOverallScore& rhs) const;
     bool operator>(const DataOverallScore& rhs) const;
+
+	// clear function
+	void clear();
   
   private:
     size_t id;              // id of selected data item
