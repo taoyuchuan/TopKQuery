@@ -239,6 +239,11 @@ void BruteForce::bruteForceSolution2()
       myPriorityQueue.pop();
       index--;
     }
+
+  sequenceAccess = dataSet.getDataSize() * dataSet.getListSize();
+  randomAccess = 0;
+  executionCost = dataSet.getDataSize() * dataSet.getListSize();
+
 }
 
 // function to print topK result

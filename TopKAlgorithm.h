@@ -14,6 +14,7 @@ The actual implementation is in file TopKAlgorithm.cpp
 #include "DataOverallScore.h"
 #include <cstdio>
 #include <math.h>
+#include <iomanip>
     
 // define a struct to help to maintain the best position in a list
 struct BP
