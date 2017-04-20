@@ -1,4 +1,4 @@
-all: dataset.x bruteforce.x FA.x BPA.x BPA2.x TA.x compare1.x compare2.x compare3.x
+all: dataset.x bruteforce.x FA.x BPA.x BPA2.x TA.x compare1.x compare2.x compare3.x userTest.x run
 
 dataset.x: DataItem.cpp DataSet.cpp DataSetTest.cpp Makefile
 	g++ -std=c++11 -O3 -o dataset.x DataItem.cpp DataSet.cpp DataSetTest.cpp
@@ -27,5 +27,13 @@ compare2.x: DataItem.cpp DataSet.cpp DataOverallScore.cpp TopKAlgorithm.cpp Brut
 compare3.x: DataItem.cpp DataSet.cpp DataOverallScore.cpp TopKAlgorithm.cpp BruteForce.cpp FA.cpp BPA.cpp BPA2.cpp compare3.cpp TA.cpp Makefile
 	g++ -std=c++11 -O3 -o compare3.x DataItem.cpp DataSet.cpp DataOverallScore.cpp TopKAlgorithm.cpp BruteForce.cpp FA.cpp BPA.cpp BPA2.cpp compare3.cpp TA.cpp
 
+userTest.x: DataItem.cpp DataSet.cpp DataOverallScore.cpp TopKAlgorithm.cpp BruteForce.cpp FA.cpp BPA.cpp BPA2.cpp userTest.cpp TA.cpp Makefile
+	g++ -std=c++11 -O3 -o userTest.x DataItem.cpp DataSet.cpp DataOverallScore.cpp TopKAlgorithm.cpp BruteForce.cpp FA.cpp BPA.cpp BPA2.cpp userTest.cpp TA.cpp
+
+run:
+	./compare1.x > result1
+	./compare2.x > result2
+	./compare3.x > result3
+
 clean:
-	rm -f *.o *.x core.*
+	rm -f *.o *.x core.* result*
