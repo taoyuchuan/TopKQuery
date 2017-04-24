@@ -497,37 +497,47 @@ void DataSet::generateDataSet()
 {
 	vector<DataItem> list;
 	srand(time(NULL));
+	//generate dataitme for each list
 	for (int i = 0; i < listSize; i++)
 	{
 		for (int j = 0; j < dataSize; j++)
 		{
+			//create the DateItem, give it random value
 			DataItem* item = new DataItem;
 			item->setId(j+1);
 			item->setListNum(i+1);
 			item->setScore(rand() % (dataSize * 5) + 1);
+			//push to list
 			list.push_back(*item);
 		}
+		//sort the list and add it the lists
 		sort(list);
+		//give the position value for the dataitem in the list
 		for (int k = 0; k < list.size(); k++)
 		{
 			list[k].setPosition(k+1);
 		}
 		lists.push_back(list);
+		//clear the list
 		list.clear();
 	}
 }
 
+//genearte correalted data set
 void DataSet::generateDataSet2(int parameter)
 {
         vector<DataItem> list;
         srand(time(NULL));
+	// generate dataitme for each list
         for (int i = 0; i < listSize; i++)
         {
                 for (int j = 0; j < dataSize; j++)
                 {
+			//create the Dataitem
                         DataItem* item = new DataItem;
                         item->setId(j+1);
                         item->setListNum(i+1);
+			//give the value for each data item base on the local score in the previous list
 			if( i == 0)              
                         	item->setScore(rand() %dataSize + 1);
 			else
@@ -542,8 +552,10 @@ void DataSet::generateDataSet2(int parameter)
 		lists.push_back(list);
                 list.clear();
         }
+	//give the position for each dataitme in the list
 	for( int i = 0; i < listSize; i++)
 	{
+		//sort the list
 		sort(lists[i]);  
                 for (int k = 0; k < dataSize; k++)
                 {
@@ -572,19 +584,23 @@ void DataSet::clearIndex()
 	dataItemIndex.clear();
 }
 
+
+//sort function to sort dataitem in a list
 void DataSet::sort(vector<DataItem>& oneList)
 {
-	
+	//quick sort method
 	quickSort(oneList,0,dataSize-1);
 }
 
 void DataSet::quickSort(vector<DataItem>& oneList, int first, int last)
 {
+	//if the size if sammler than 20, use insetionsort
 	if (last - first <= 20)
 	{
 		insertionSort(oneList,first,last);
 		return;
 	}
+	//otherwise use quick sort
 	int pivot;
 	if (first < last)
 	{
@@ -609,6 +625,7 @@ void DataSet::insertionSort(vector<DataItem>& oneList, int first, int last)
 	}
 }
 
+//parition function that used for quicksort
 int DataSet::partition(vector<DataItem>& oneList,int first, int last)
 {
 	int i, j;
